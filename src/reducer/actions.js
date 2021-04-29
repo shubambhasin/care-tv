@@ -39,3 +39,9 @@ export const isWatched = (state, video) => {
     return true;
   }
 };
+
+export const checkLogin = (login, setLogin) => {
+  if (login) {
+    setLogin(false);
+  } 
+};

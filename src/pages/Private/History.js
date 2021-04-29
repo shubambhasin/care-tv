@@ -1,9 +1,9 @@
 import React from 'react'
-import VideoCardHorizontal from '../components/VideoCardHorizontal'
-import { useVideo } from '../context/videoLibraryContext'
+import VideoCardHorizontal from '../../components/VideoCardHorizontal'
+import { useVideo } from '../../context/videoLibraryContext'
 
 
-import history from "../assets/history.svg"
+import history from "../../assets/history.svg"
 import { Link } from 'react-router-dom'
 const History = () => {
 

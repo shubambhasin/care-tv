@@ -1,9 +1,11 @@
 import React from "react";
-import ChildNav from "../components/ChildNav";
 import VideoCard from "../components/VideoCard";
+import { useAuth } from "../context/AuthContext";
 import { videoData } from "../data/Data";
 
 const Homepage = () => {
+
+  const { login } = useAuth()
   return (
     <div className="homepage content-container">
       {/* <ChildNav/> */}

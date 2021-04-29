@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FcBriefcase } from "react-icons/fc";
+import { GoVerified } from "react-icons/go";
 import {
   ADD_TO_SAVED_VIDEOS,
   isVideoInSaved,
@@ -9,7 +10,8 @@ import {
   ADD_TO_HISTORY,
 } from "../reducer/actions";
 import { useVideo } from "../context/videoLibraryContext";
-
+import { FaRegSave, FaSave } from "react-icons/fa";
+import { GrView} from 'react-icons/gr'
 const VideoCard = ({ video }) => {
   const { state, dispatch } = useVideo();
 
@@ -40,21 +42,27 @@ const VideoCard = ({ video }) => {
           <FcBriefcase size={28} />
         </div>
         <div className="video-info">
-          <h1 className=" h5 bold">Name: {video.name}</h1>
-          <p>Channel name</p>
-          <span>20l views</span> * <span>{video.timeAgo}</span>
+          <h1 className=" h5 bold">{video.name}</h1>
+          <span className="flex aic gap-1 f-grey"><p>Channel name</p>  <GoVerified /></span>
+          <span className="f-grey1" >{Math.floor(Math.random()*100)}M views</span> * <span>{video.timeAgo}</span>
         </div>
       </div>
-      <Link
+     <span className="flex">
+     <Link
         to={`/watch/${video.id}`}
         onClick={() => addToHistory(state, video)}
-        className="btn btn-green"
+        className="btn"
+        title="Watch"
       >
-        Watch now
+        <GrView  size={28}/>
       </Link>
-      <button className="btn btn-blue" onClick={() => addToSaved(state, video)}>
-        Save
+      <button title="Save" className="btn flex aic" onClick={() => addToSaved(state, video)}>
+      {state.savedVideos.filter((data) => data.id === video.id)
+                    .length === 0
+                    ? <FaRegSave size={28} />
+                    : <FaSave size={28} />}
       </button>
+     </span>
     </div>
   );
 };

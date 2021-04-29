@@ -11,7 +11,7 @@ const Watching = () => {
 
       {videoData.filter((data) => data.id === videoId).map((video) => {
           return(
-              <Player video={video} />
+              <Player key={video.id} video={video} />
           )
       })}
 

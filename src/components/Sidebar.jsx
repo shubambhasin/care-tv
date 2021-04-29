@@ -22,9 +22,10 @@ const Sidebar = () => {
         <Link className="links flex aic gap-2" to="/history">
           <FaHistory /> History ({state.history.length})
         </Link>
-        <Link className="links flex aic gap-2" to="/playlists">
+        <Link className="links flex aic gap-2" to="/playlist">
           <MdPlaylistAdd /> Playlists
         </Link>
+        
       </span>
     </div>
   );

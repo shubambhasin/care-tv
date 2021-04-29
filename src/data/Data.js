@@ -61,7 +61,7 @@ export const videoData = [
   },
 ];
 
-const videoData2 = [
+export const videoData2 = [
   {
     id: "BIbFyKmtpCQ",
     thumbnail:

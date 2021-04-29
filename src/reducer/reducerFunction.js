@@ -55,8 +55,6 @@ import {
           ...state,
           history: state.history.filter((data) => data.id !== payload.id),
         };
-        case ADD_TO_PLAYLIST:
-          return
   
       default:
         alert("UNKNOWN ACTION, PLEASE CHECK");
