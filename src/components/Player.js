@@ -24,6 +24,9 @@ import {
 import Playlist from "../pages/Private/Playlist";
 import { usePlaylist } from "../context/playlist/PlaylistContext";
 
+
+
+// ***************** player************************************ */
 const Player = ({ video }) => {
   const { state, dispatch } = useVideo();
   const { playlistState, dispatchPlaylist, showPlaylist, setShowPlaylist } = usePlaylist();
@@ -64,22 +67,22 @@ const Player = ({ video }) => {
   };
 
   const handlePlaylist = (video) => {
-    console.log(video.id);
+    console.log(video._id);
     console.log(playlistState);
     setShowPlaylist(true);
   };
 
   return (
     <div className="player">
-      <YouTube videoId="K3C13blNf0I" />
-      <h1 className="h3">Title of video: </h1>
+      <YouTube videoId={`${video.videoId}`} />
+      <h1 className="h3">{video.name} </h1>
       <div className="flex">
         <span>
           <p>20k views</p>
         </span>
         <span>
           <button className="btn" onClick={() => addToLiked(state, video)}>
-            {state.likedVideos.filter((data) => data.id === video.id).length ===
+            {state.likedVideos.filter((data) => data.videoId === video.videoId).length ===
             0 ? (
               <AiOutlineLike size={28} />
             ) : (
@@ -87,7 +90,7 @@ const Player = ({ video }) => {
             )}
           </button>
           <span onClick={() => addToUnliked(state, video)}>
-            {state.unlikedVideos.filter((data) => data.id === video.id)
+            {state.unlikedVideos.filter((data) => data.videoId === video.videoId)
               .length === 0 ? (
               <AiOutlineDislike size={28} />
             ) : (
@@ -95,7 +98,7 @@ const Player = ({ video }) => {
             )}
           </span>
           <button className="btn" onClick={() => addToSaved(state, video)}>
-            {state.savedVideos.filter((data) => data.id === video.id).length ===
+            {state.savedVideos.filter((data) => data._id === video._id).length ===
             0 ? (
               <FaRegSave size={28} />
             ) : (

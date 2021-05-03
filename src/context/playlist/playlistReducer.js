@@ -20,15 +20,15 @@ export const playlistReducer = (playlistState, { type, payload }) => {
       return {
         ...playlistState,
         playlist: playlistState.playlist.map((playlist) => {
-          if (payload.playlistId === playlist.id) {
+          if (payload.playlistId === playlist._id) {
             if (
-              playlist.videos.filter((video) => video.id === payload.video.id)
+              playlist.videos.filter((video) => video._id === payload.video._id)
                 .length > 0
             ) {
               return {
                 ...playlist,
                 videos: playlist.videos.filter(
-                  (video) => video.id !== payload.video.id
+                  (video) => video._id !== payload.video._id
                 ),
               };
             }

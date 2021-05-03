@@ -1,17 +1,39 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect } from "react";
 import { useParams } from "react-router";
 import Player from "../components/Player";
-import { videoData } from "../data/Data";
+import { useVideo } from "../context/videoLibraryContext";
+import { ADD_ALL_VIDEOS } from "../reducer/actions";
 
 const Watching = () => {
+  const { state, dispatch } = useVideo();
   const { videoId } = useParams();
+  useEffect(() => {
+    (async () => {
+      try {
+        // setLoader(true);
+        const videoData = await axios.get(
+          "https://videolibrarybackend.shubambhasin.repl.co/videos"
+        );
+        // setLoader(false)
+
+        console.log(videoData.data.data);
+        // setAbc(videoData.data.data);
+        // console.log(abc);
+        dispatch({ type: ADD_ALL_VIDEOS, payload: videoData.data.data });
+      } catch (err) {
+        // setLoader(false)
+        console.log(err);
+      }
+    })();
+  }, []);
   return (
     <div className="watching content-container ">
       
 
-      {videoData.filter((data) => data.id === videoId).map((video) => {
+      {state.allVideos.filter((data) => data.videoId === videoId).map((video) => {
           return(
-              <Player key={video.id} video={video} />
+              <Player key={video.videoId} video={video} />
           )
       })}
 

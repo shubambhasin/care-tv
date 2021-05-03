@@ -11,7 +11,10 @@ import {
 } from "../reducer/actions";
 import { useVideo } from "../context/videoLibraryContext";
 import { FaRegSave, FaSave } from "react-icons/fa";
-import { GrView} from 'react-icons/gr'
+import { GrView } from "react-icons/gr";
+import axios from "axios";
+
+
 const VideoCard = ({ video }) => {
   const { state, dispatch } = useVideo();
 
@@ -23,18 +26,29 @@ const VideoCard = ({ video }) => {
     }
   };
 
-  const addToHistory = (state, data) => {
+  const addToHistory =  async (state, data) => {
     dispatch({ type: REMOVE_FROM_HISTORY, payload: data });
     dispatch({ type: ADD_TO_HISTORY, payload: data });
+
+      try{
+
+        const { res } = axios.post("https://videolibrarybackend.shubambhasin.repl.co/history", data)
+        const resp = res;
+        console.log(resp)
+
+      }catch(err){
+        console.error(err)
+      }
+
   };
 
   return (
     <div className="video-card">
-      <Link to={`/watch/${video.id}`}>
+      <Link onClick={() => addToHistory(state, video)} to={`/watch/${video.videoId}`}>
         <img
-          src="https://i.ytimg.com/vi/l1RSDqTx0Wg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCrCAUXizWeKC7tBNvMHUE3aRESlg"
-          alt="video-thumbnail"
+          src={`${video.thumbnail}`}
           className="responsive"
+          alt="videoThumbnail"
         />
       </Link>
       <div className="video-info-flex p1-rem">
@@ -43,26 +57,36 @@ const VideoCard = ({ video }) => {
         </div>
         <div className="video-info">
           <h1 className=" h5 bold">{video.name}</h1>
-          <span className="flex aic gap-1 f-grey"><p>Channel name</p>  <GoVerified /></span>
-          <span className="f-grey1" >{Math.floor(Math.random()*100)}M views</span> * <span>{video.timeAgo}</span>
+          <span className="flex aic gap-1 f-grey">
+            <p>{video.category}</p> <GoVerified />
+          </span>
+          <span className="f-grey1">
+            {Math.floor(Math.random() * 100)}M views
+          </span>{" "}<span>{video.timeAgo}</span>
         </div>
       </div>
-     <span className="flex">
-     <Link
-        to={`/watch/${video.id}`}
-        onClick={() => addToHistory(state, video)}
-        className="btn"
-        title="Watch"
-      >
-        <GrView  size={28}/>
-      </Link>
-      <button title="Save" className="btn flex aic" onClick={() => addToSaved(state, video)}>
-      {state.savedVideos.filter((data) => data.id === video.id)
-                    .length === 0
-                    ? <FaRegSave size={28} />
-                    : <FaSave size={28} />}
-      </button>
-     </span>
+      <span className="flex">
+        <Link
+          to={`/watch/${video.videoId}`}
+          onClick={() => addToHistory(state, video)}
+          className="btn"
+          title="Watch"
+        >
+          <GrView size={28} />
+        </Link>
+        <button
+          title="Save"
+          className="btn flex aic"
+          onClick={() => addToSaved(state, video)}
+        >
+          {state.savedVideos.filter((data) => data._id === video._id).length ===
+          0 ? (
+            <FaRegSave size={28} />
+          ) : (
+            <FaSave size={28} />
+          )}
+        </button>
+      </span>
     </div>
   );
 };

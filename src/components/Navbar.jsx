@@ -25,7 +25,8 @@ const Navbar = () => {
         <Link className="links" to="/playlists">
           Playlists
         </Link>
-       <button onClick={() => checkLogin(login, setLogin, user)}> <NavLink className="btn btn-red" to="/login">{login ? "Logout" : "Login"}</NavLink></button>
+        
+       <button className="btn btn-red" onClick={() => checkLogin(login, setLogin, user)}> <NavLink  to="/login">{login ? "Logout" : "Login"}</NavLink></button>
       </span>
     </div>
   );

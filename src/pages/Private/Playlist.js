@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { CREATE_NEW_PLAYLIST, ADD_VIDEO_TO_PLAYLIST, isVideoInPlaylist } from "../../context/playlist/playlistActions";
+import {
+  CREATE_NEW_PLAYLIST,
+  ADD_VIDEO_TO_PLAYLIST,
+  isVideoInPlaylist,
+} from "../../context/playlist/playlistActions";
 import { usePlaylist } from "../../context/playlist/PlaylistContext";
 
-const Playlist = ({video}) => {
+const Playlist = ({ video }) => {
   const [newPlaylist, setNewPlaylist] = useState("");
   const {
     playlistState,
@@ -14,28 +18,23 @@ const Playlist = ({video}) => {
   const addNewPlaylist = () => {
     //TODO: toast alert
     dispatchPlaylist({ type: CREATE_NEW_PLAYLIST, payload: newPlaylist });
-    console.log(playlistState.playlist)
+    console.log(playlistState.playlist);
   };
   const setInput = (e) => {
     console.log(e.target.value);
     setNewPlaylist(e.target.value);
   };
 
-
   // for adding video to the playlist
   const addVideoToPlaylist = (video, playlistId) => {
-
-    if(isVideoInPlaylist( video, playlistId,playlistState, dispatchPlaylist))
-    {
-
+    if (isVideoInPlaylist(video, playlistId, playlistState, dispatchPlaylist)) {
+    } else {
+      dispatchPlaylist({
+        type: ADD_VIDEO_TO_PLAYLIST,
+        payload: { video: video, playlistId: playlistId },
+      });
     }
-    else
-    {
-      dispatchPlaylist({ type: ADD_VIDEO_TO_PLAYLIST, payload: {video:video, playlistId: playlistId}})
-
-    }
-
-  }
+  };
 
   return (
     <div className="playlist-bg container ">
@@ -51,8 +50,12 @@ const Playlist = ({video}) => {
         </div>
         {playlistState.playlist.map((data) => {
           return (
-            <div key={data.id} className="flex gap-1 aic f-white mt1-rem">
-              <input type="checkbox" name="playlist-check" onChange={() => addVideoToPlaylist(video, data.id)} />
+            <div key={data._id} className="flex gap-1 aic f-white mt1-rem">
+              <input
+                type="checkbox"
+                name="playlist-check"
+                onChange={() => addVideoToPlaylist(video, data._id)}
+              />
               <p>{data.playlistName}</p>
             </div>
           );

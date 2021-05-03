@@ -24,7 +24,7 @@ const VideoCardHorizontal = ({ video }) => {
 
   return (
     <div className="video-card-horizontal">
-      <Link to={`/watch/${video.id}`} >
+      <Link to={`/watch/${video.videoId}`} >
       <img
         src="https://i.ytimg.com/vi/l1RSDqTx0Wg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCrCAUXizWeKC7tBNvMHUE3aRESlg"
         alt="video-thumbnail" className="responsive"
@@ -40,7 +40,7 @@ const VideoCardHorizontal = ({ video }) => {
           <span>20l views</span> * <span>{video.timeAgo}</span> 
         </div>
       </div>
-      <Link to={`/watch/${video.id}`} onClick={() => addToHistory(state, video)}
+      <Link to={`/watch/${video.videoId}`} onClick={() => addToHistory(state, video)}
          className="btn btn-green">
         Watch now
       </Link>

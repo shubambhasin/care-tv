@@ -8,10 +8,18 @@ import {
     ADD_TO_HISTORY,
     REMOVE_FROM_HISTORY,
     ADD_TO_PLAYLIST,
+    ADD_ALL_VIDEOS,
   } from "./actions";
   
   export const reducerFunction = (state, { type, payload }) => {
     switch (type) {
+      case ADD_ALL_VIDEOS: 
+      return {
+
+        ...state,
+        allVideos: [...payload]
+
+      }
       case ADD_TO_SAVED_VIDEOS:
         return {
           ...state,
@@ -48,7 +56,7 @@ import {
       case ADD_TO_HISTORY:
         return {
           ...state,
-          history: [payload, ...state.history],
+          history: [...payload],
         };
       case REMOVE_FROM_HISTORY:
         return {

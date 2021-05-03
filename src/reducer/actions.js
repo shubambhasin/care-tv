@@ -1,4 +1,5 @@
 export const ADD_TO_SAVED_VIDEOS = "SAVED_VIDEOS";
+export const ADD_ALL_VIDEOS = "ADD_ALL_VIDEOS";
 export const REMOVE_FROM_SAVED_VIDEOS = "REMOVE_FROM_SAVED_VIDEOS";
 export const ADD_TO_HISTORY = "ADD_TO_HISTORY";
 export const REMOVE_FROM_HISTORY = "REMOVE_FROM_HISTORY";
@@ -43,5 +44,10 @@ export const isWatched = (state, video) => {
 export const checkLogin = (login, setLogin) => {
   if (login) {
     setLogin(false);
-  } 
+  }
+};
+
+export const getFilteredData = (videos, category) => {
+  return videos
+    .filter((video) => (video.category === category))
 };
