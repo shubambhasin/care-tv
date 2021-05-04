@@ -1,10 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import VideoCardHorizontal from "../../components/VideoCardHorizontal";
 import { useVideo } from "../../context/videoLibraryContext";
 import saved from "../../assets/saved.svg";
 import { Link } from "react-router-dom";
+import { ADD_TO_SAVED_VIDEOS } from "../../reducer/actions";
+import axios from "axios";
 const Saved = () => {
-  const { state } = useVideo();
+  const { state, dispatch } = useVideo();
+
+  
+  useEffect(() => {
+    ( async () => {
+      // setIsLoader(true);
+      try {
+        const { data } = await axios.get(
+          "https://videolibrarybackend.shubambhasin.repl.co/saved"
+        );
+        console.log(data);
+        dispatch({ type: ADD_TO_SAVED_VIDEOS, payload: data });
+      } catch (error) {
+        console.log({ error });
+      }
+    })();
+  }, []);
 
   return (
     <div className="saved content-container">
@@ -20,7 +38,7 @@ const Saved = () => {
         ) : (
           <>
             {state.savedVideos.map((data) => {
-              return <VideoCardHorizontal video={data} />;
+              return <VideoCardHorizontal key={data._id} video={data} />;
             })}
           </>
         )}

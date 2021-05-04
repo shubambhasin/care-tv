@@ -14,8 +14,7 @@ import Login from "./pages/Login";
 import PlaylistPage from "./pages/Private/PlaylistPage";
 
 function App() {
-
-  const { login, setLogin } = useAuth()
+  const { login, setLogin } = useAuth();
 
   const PrivateRoute = (props) => {
     return login ? <Route {...props} /> : <Navigate replace to="/login" />;
@@ -23,20 +22,19 @@ function App() {
   return (
     <div className="App">
       <Navbar />
-      <Sidebar />
       <ChildNav />
+      <Sidebar />
 
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/watch/:videoId" element={<Watching />} />
-        
+
         <PrivateRoute path="/saved" element={<Saved />} />
         <PrivateRoute path="/history" element={<History />} />
         <PrivateRoute path="/liked" element={<Liked />} />
         <PrivateRoute path="/unliked" element={<Unliked />} />
         <PrivateRoute path="/playlist" element={<PlaylistPage />} />
-
       </Routes>
     </div>
   );

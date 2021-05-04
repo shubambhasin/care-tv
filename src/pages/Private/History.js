@@ -10,21 +10,20 @@ const History = () => {
   const { state, dispatch } = useVideo();
 
   useEffect(() => {
+    ( async () => {
+      // setIsLoader(true);
+      try {
+        const { data } = await axios.get(
+          "https://videolibrarybackend.shubambhasin.repl.co/history"
+        );
+        console.log(data.data);
+        dispatch({ type: ADD_TO_HISTORY, payload: data });
+      } catch (error) {
+        console.log({ error });
+      }
+    })();
+  }, []);
 
-  const unsubscribe =   (async () => {
-    try {const videoData = await axios.get(
-        "https://videolibrarybackend.shubambhasin.repl.co/history"
-      );
-      console.log("data:", videoData.data.data);
-      dispatch({ type: ADD_TO_HISTORY, payload: videoData.data.data });
-    } catch (err) {
-      console.log(err);
-    }
-})()
-
-return () => unsubscribe
-
-  }, [])
   return (
     <div className="history content-container">
       {state.history.length === 0 ? (
@@ -39,12 +38,12 @@ return () => unsubscribe
         <>
           History
           {state.history.map((data) => {
-            return <VideoCardHorizontal video={data} />;
+            return <VideoCardHorizontal key={data._id} video={data} />;
           })}
         </>
       )}
     </div>
   );
-}
+};
 
 export default History;

@@ -22,6 +22,7 @@ h6,
 p,
 span {
   margin: 0;
+  padding: 0;
 }
 
 body {
@@ -32,7 +33,10 @@ body {
 }
 
 /* -----------------misc------------------------ */
-
+.links-black
+{
+  color: black;
+}
 .f-grey {
   color: rgb(88, 88, 88);
 }
@@ -171,9 +175,31 @@ body {
   gap: 2rem;
 }
 .video-card {
+  max-width: 250px;
+  flex: 30%;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0px 0px 1px 1px rgb(176, 226, 255);
+}
+.video-card img {
+  border-radius: 10px;
+  height: 150px;
+}
+
+.video-info
+{
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  width: 250px;
+}
+.channel-name
+{
+  height: 100%;
+}
+/* .video-card {
+  display: flex;
+  flex-direction: column;
+  max-width: 250px;
   height: max-content;
   border-radius: 5px;
 }
@@ -194,7 +220,7 @@ body {
 .video-info {
   flex: 80%;
   font-size: small;
-}
+} */
 
 /* --------------------video-card-horizontal------------------------ */
 
@@ -204,15 +230,17 @@ body {
 }
 
 .video-card-horizontal {
-  flex: 50%;
   display: flex;
-  width: 70%;
+  justify-content:flex-start;
+
 }
 .video-card-horizontal .btn {
   align-self: center;
   width: max-content;
 }
 .video-card-horizontal img {
+  width: 200px;
+  height: auto;
 }
 
 /* ------------------playlist--------------------- */

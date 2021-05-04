@@ -23,12 +23,12 @@ import {
       case ADD_TO_SAVED_VIDEOS:
         return {
           ...state,
-          savedVideos: [...state.savedVideos, payload],
+          savedVideos: [...payload],
         };
       case REMOVE_FROM_SAVED_VIDEOS:
         return {
           ...state,
-          savedVideos: state.savedVideos.filter((data) => data.id !== payload.id),
+          savedVideos: state.savedVideos.filter((data) => data._id !== payload._id),
         };
       case ADD_TO_LIKED_VIDEOS:
         return {
@@ -38,7 +38,7 @@ import {
       case REMOVE_FROM_LIKED_VIDEOS:
         return {
           ...state,
-          likedVideos: state.likedVideos.filter((data) => data.id !== payload.id),
+          likedVideos: state.likedVideos.filter((data) => data._id !== payload._id),
         };
   
       case ADD_TO_UNLIKED_VIDEOS:
@@ -50,7 +50,7 @@ import {
         return {
           ...state,
           unlikedVideos: state.unlikedVideos.filter(
-            (data) => data.id !== payload.id
+            (data) => data._id !== payload._id
           ),
         };
       case ADD_TO_HISTORY:
@@ -61,7 +61,7 @@ import {
       case REMOVE_FROM_HISTORY:
         return {
           ...state,
-          history: state.history.filter((data) => data.id !== payload.id),
+          history: state.history.filter((data) => data._id !== payload._id),
         };
   
       default:
