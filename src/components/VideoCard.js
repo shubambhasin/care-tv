@@ -50,56 +50,7 @@ const VideoCard = ({ video }) => {
   };
 
   return (
-    // <div className="video-card">
-    //   <Link
-    //     onClick={() => addToHistory(state, video)}
-    //     to={`/watch/${video.videoId}`}
-    //   >
-    //     <img
-    //       src={`${video.thumbnail}`}
-    //       className="responsive"
-    //       alt="videoThumbnail"
-    //     />
-    //   </Link>
-    //   <div className="video-info-flex p1-rem">
-    //     {/* <div className="video-icon">
-    //       <FcBriefcase size={28} />
-    //     </div> */}
-    //     <div className="video-info">
-    //       <h1 className=" h5 bold">{video.name}</h1>
-    //       <span className="flex aic gap-1 f-grey">
-    //         <p>{video.category}</p> <GoVerified />
-    //       </span>
-    //       <span className="f-grey1">
-    //         {Math.floor(Math.random() * 100)}M views
-    //       </span>{" "}
-    //        {/*//TODO: add <span>{video.timeAgo}</span> */}
-    //       <span className="flex">
-    //     <Link
-    //       to={`/watch/${video.videoId}`}
-    //       onClick={() => addToHistory(state, video)}
-    //       className="btn"
-    //       title="Watch"
-    //     >
-    //       <GrView size={28} />
-    //     </Link>
-    //     <button
-    //       title="Save"
-    //       className="btn flex aic"
-    //       onClick={() => addToSaved(state, video)}
-    //     >
-    //       {state.savedVideos.filter((data) => data._id === video._id).length ===
-    //       0 ? (
-    //         <FaRegSave size={28} />
-    //       ) : (
-    //         <FaSave size={28} />
-    //       )}
-    //     </button>
-    //   </span>
-    //     </div>
-    //   </div>
-
-    // </div>
+   
     <div className="video-card">
       <Link
         className="flex-1"
@@ -128,7 +79,10 @@ const VideoCard = ({ video }) => {
         </p>
         <small>{Math.floor(Math.random() * 100)}M views</small>
       </div>
-      <span className="flex">
+     
+     {/* //TODO: for save button on homepage */}
+     
+      {/* <span className="flex">
         <Link
           to={`/watch/${video.videoId}`}
           onClick={() => addToHistory(state, video)}
@@ -149,7 +103,7 @@ const VideoCard = ({ video }) => {
             <FaSave size={28} />
           )}
         </button>
-      </span>
+      </span> */}
     </div>
   );
 };

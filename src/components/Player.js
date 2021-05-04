@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import YouTube from "react-youtube";
 import { useVideo } from "../context/videoLibraryContext";
 import {
@@ -23,40 +23,77 @@ import {
 } from "../reducer/actions";
 import Playlist from "../pages/Private/Playlist";
 import { usePlaylist } from "../context/playlist/PlaylistContext";
-
-
+import axios from "axios";
 
 // ***************** player************************************ */
 const Player = ({ video }) => {
   const { state, dispatch } = useVideo();
-  const { playlistState, dispatchPlaylist, showPlaylist, setShowPlaylist } = usePlaylist();
+  const {
+    playlistState,
+    dispatchPlaylist,
+    showPlaylist,
+    setShowPlaylist,
+  } = usePlaylist();
 
   // ADDING TO SAVED
   const addToSaved = (state, data) => {
-    if (isVideoInSaved(state, data) === false) {
-      dispatch({ type: ADD_TO_SAVED_VIDEOS, payload: data });
-    } else {
-      dispatch({ type: REMOVE_FROM_SAVED_VIDEOS, payload: data });
+    // if (isVideoInSaved(state, data) === false) {
+    //   dispatch({ type: ADD_TO_SAVED_VIDEOS, payload: data });
+    // } else {
+    //   dispatch({ type: REMOVE_FROM_SAVED_VIDEOS, payload: data });
+    // }
+    try {
+      const { res } = axios.post(
+        "https://videolibrarybackend.shubambhasin.repl.co/saved",
+        data
+      );
+      const resp = res;
+      console.log(resp);
+    } catch (err) {
+      console.error(err);
     }
   };
 
   // ADDING TO LIKED VIDEOS / REMOVING FROM UNLIKED
   const addToLiked = (state, data) => {
-    if (isVideoInLiked(state, data) === false) {
-      dispatch({ type: ADD_TO_LIKED_VIDEOS, payload: data });
-      dispatch({ type: REMOVE_FROM_UNLIKED_VIDEOS, payload: data });
-    } else {
-      dispatch({ type: REMOVE_FROM_LIKED_VIDEOS, payload: data });
+    //TODO:
+    // if (isVideoInLiked(state, data) === false) {
+    //   dispatch({ type: ADD_TO_LIKED_VIDEOS, payload: data });
+    //   dispatch({ type: REMOVE_FROM_UNLIKED_VIDEOS, payload: data });
+    // } else {
+    //   dispatch({ type: REMOVE_FROM_LIKED_VIDEOS, payload: data });
+    // }
+
+    try {
+      const { res } = axios.post(
+        "https://videolibrarybackend.shubambhasin.repl.co/liked",
+        data
+      );
+      const resp = res;
+      console.log(resp);
+    } catch (err) {
+      console.error(err);
     }
   };
 
   // ADDING TO UNLIKED VIDEOS / REMOVING FROM LIKED VIDEOS
   const addToUnliked = (state, data) => {
-    if (isVideoInUnliked(state, data) === false) {
-      dispatch({ type: ADD_TO_UNLIKED_VIDEOS, payload: data });
-      dispatch({ type: REMOVE_FROM_LIKED_VIDEOS, payload: data });
-    } else {
-      dispatch({ type: REMOVE_FROM_UNLIKED_VIDEOS, payload: data });
+    //TODO: unliked video
+    // if (isVideoInUnliked(state, data) === false) {
+    //   dispatch({ type: ADD_TO_UNLIKED_VIDEOS, payload: data });
+    //   dispatch({ type: REMOVE_FROM_LIKED_VIDEOS, payload: data });
+    // } else {
+    //   dispatch({ type: REMOVE_FROM_UNLIKED_VIDEOS, payload: data });
+    // }
+    try {
+      const { res } = axios.post(
+        "https://videolibrarybackend.shubambhasin.repl.co/unliked",
+        data
+      );
+      const resp = res;
+      console.log(resp);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -82,24 +119,25 @@ const Player = ({ video }) => {
         </span>
         <span>
           <button className="btn" onClick={() => addToLiked(state, video)}>
-            {state.likedVideos.filter((data) => data.videoId === video.videoId).length ===
-            0 ? (
+            {state.likedVideos.filter((data) => data.videoId === video.videoId)
+              .length === 0 ? (
               <AiOutlineLike size={28} />
             ) : (
               <AiTwotoneLike size={28} />
             )}
           </button>
           <span onClick={() => addToUnliked(state, video)}>
-            {state.unlikedVideos.filter((data) => data.videoId === video.videoId)
-              .length === 0 ? (
+            {state.unlikedVideos.filter(
+              (data) => data.videoId === video.videoId
+            ).length === 0 ? (
               <AiOutlineDislike size={28} />
             ) : (
               <AiTwotoneDislike size={28} />
             )}
           </span>
           <button className="btn" onClick={() => addToSaved(state, video)}>
-            {state.savedVideos.filter((data) => data._id === video._id).length ===
-            0 ? (
+            {state.savedVideos.filter((data) => data._id === video._id)
+              .length === 0 ? (
               <FaRegSave size={28} />
             ) : (
               <FaSave size={28} />
