@@ -7,7 +7,6 @@ import {
     REMOVE_FROM_UNLIKED_VIDEOS,
     ADD_TO_HISTORY,
     REMOVE_FROM_HISTORY,
-    ADD_TO_PLAYLIST,
     ADD_ALL_VIDEOS,
   } from "./actions";
   
@@ -33,7 +32,7 @@ import {
       case ADD_TO_LIKED_VIDEOS:
         return {
           ...state,
-          likedVideos: [...state.likedVideos, payload],
+          likedVideos: [...payload],
         };
       case REMOVE_FROM_LIKED_VIDEOS:
         return {
@@ -44,7 +43,7 @@ import {
       case ADD_TO_UNLIKED_VIDEOS:
         return {
           ...state,
-          unlikedVideos: [...state.unlikedVideos, payload],
+          unlikedVideos: [...payload],
         };
       case REMOVE_FROM_UNLIKED_VIDEOS:
         return {

@@ -263,37 +263,8 @@ body {
   width: 320px;
   min-height: 400px;
 }
-/* 
-.jcsb
+.block-center
 {
-  justify-content: space-between;
+  display: grid;
+  place-items: center;
 }
-.jcc
-{
-  justify-content: center;
-}
-.jcfs
-{
-  justify-content: flex-start;
-}
-.jcfe
-{
-  justify-content: flex-end;
-}
-.jcsa
-{
-  justify-content: space-around;
-}
-
-.aic
-{
-  align-items: center;
-}
-.aife
-{
-  align-items: flex-end;
-}
-.aifs
-{
-  align-items: flex-start;
-} */

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   CREATE_NEW_PLAYLIST,
   ADD_VIDEO_TO_PLAYLIST,
@@ -11,7 +11,6 @@ const Playlist = ({ video }) => {
   const {
     playlistState,
     dispatchPlaylist,
-    showPlaylist,
     setShowPlaylist,
   } = usePlaylist();
 
@@ -19,10 +18,6 @@ const Playlist = ({ video }) => {
     //TODO: toast alert
     dispatchPlaylist({ type: CREATE_NEW_PLAYLIST, payload: newPlaylist });
     console.log(playlistState.playlist);
-  };
-  const setInput = (e) => {
-    console.log(e.target.value);
-    setNewPlaylist(e.target.value);
   };
 
   // for adding video to the playlist

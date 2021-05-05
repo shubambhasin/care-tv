@@ -12,9 +12,11 @@ import Unliked from "./pages/Private/Unliked";
 import { useAuth } from "./context/AuthContext";
 import Login from "./pages/Login";
 import PlaylistPage from "./pages/Private/PlaylistPage";
+import Signup from "./pages/Signup";
+import Success from "./pages/Success";
 
 function App() {
-  const { login, setLogin } = useAuth();
+  const { login,} = useAuth();
 
   const PrivateRoute = (props) => {
     return login ? <Route {...props} /> : <Navigate replace to="/login" />;
@@ -28,6 +30,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/watch/:videoId" element={<Watching />} />
 
         <PrivateRoute path="/saved" element={<Saved />} />
@@ -35,6 +38,7 @@ function App() {
         <PrivateRoute path="/liked" element={<Liked />} />
         <PrivateRoute path="/unliked" element={<Unliked />} />
         <PrivateRoute path="/playlist" element={<PlaylistPage />} />
+        <PrivateRoute path="/success" element={<Success />} />
       </Routes>
     </div>
   );

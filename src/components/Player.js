@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { } from "react";
 import YouTube from "react-youtube";
 import { useVideo } from "../context/videoLibraryContext";
 import {
@@ -8,29 +8,15 @@ import {
   AiTwotoneDislike,
 } from "react-icons/ai";
 import { FaRegSave, FaSave } from "react-icons/fa";
-import {
-  ADD_TO_HISTORY,
-  ADD_TO_LIKED_VIDEOS,
-  ADD_TO_SAVED_VIDEOS,
-  ADD_TO_UNLIKED_VIDEOS,
-  isVideoInLiked,
-  isVideoInSaved,
-  isVideoInUnliked,
-  REMOVE_FROM_HISTORY,
-  REMOVE_FROM_LIKED_VIDEOS,
-  REMOVE_FROM_SAVED_VIDEOS,
-  REMOVE_FROM_UNLIKED_VIDEOS,
-} from "../reducer/actions";
 import Playlist from "../pages/Private/Playlist";
 import { usePlaylist } from "../context/playlist/PlaylistContext";
 import axios from "axios";
 
 // ***************** player************************************ */
 const Player = ({ video }) => {
-  const { state, dispatch } = useVideo();
+  const { state} = useVideo();
   const {
     playlistState,
-    dispatchPlaylist,
     showPlaylist,
     setShowPlaylist,
   } = usePlaylist();
@@ -98,10 +84,11 @@ const Player = ({ video }) => {
   };
 
   // add to history
-  const addToHistory = (state, data) => {
-    dispatch({ type: REMOVE_FROM_HISTORY, payload: data });
-    dispatch({ type: ADD_TO_HISTORY, payload: data });
-  };
+  //TODO:
+  // const addToHistory = (state, data) => {
+  //   dispatch({ type: REMOVE_FROM_HISTORY, payload: data });
+  //   dispatch({ type: ADD_TO_HISTORY, payload: data });
+  // };
 
   const handlePlaylist = (video) => {
     console.log(video._id);

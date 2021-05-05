@@ -1,8 +1,7 @@
 import React from "react";
-import { FaVideo } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FcBriefcase} from "react-icons/fc"
-import { ADD_TO_HISTORY, ADD_TO_SAVED_VIDEOS, isVideoInSaved, REMOVE_FROM_HISTORY, REMOVE_FROM_SAVED_VIDEOS } from "../reducer/actions";
+import { ADD_TO_HISTORY } from "../reducer/actions";
 import { useVideo } from "../context/videoLibraryContext";
 import axios from "axios";
 

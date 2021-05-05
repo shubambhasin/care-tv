@@ -3,7 +3,7 @@ import VideoCard from "../../components/VideoCard";
 import { usePlaylist } from "../../context/playlist/PlaylistContext";
 
 const PlaylistPage = () => {
-  const { playlistState, dispatchPlaylist } = usePlaylist();
+  const { playlistState } = usePlaylist();
   return (
     <div className="playlist-page content-container">
       <h1>Playlists</h1>

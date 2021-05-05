@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import VideoCard from "../components/VideoCard";
-import { useAuth } from "../context/AuthContext";
-import { videoData } from "../data/Data";
 import axios from "axios";
 import { useVideo } from "../context/videoLibraryContext";
 import { ADD_ALL_VIDEOS } from "../reducer/actions";
 import Loader from "../components/loader/Loader";
-import Sidebar from "../components/Sidebar";
+
 const Homepage = () => {
-  const { login } = useAuth();
   const { state, dispatch, loader, setLoader } = useVideo();
   const [abc, setAbc] = useState([]);
   useEffect(() => {
@@ -28,6 +25,8 @@ const Homepage = () => {
         console.log(err);
       }
     })();
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /*
@@ -37,13 +36,13 @@ const Homepage = () => {
   return (
     <div className="homepage content-container">
       {/* <ChildNav/> */}
+        {loader && <Loader />}
       {/* <Sidebar /> */}
       <div className="video-card-container">
         {!loader &&
           state.allVideos.map((data) => {
             return <VideoCard key={data._id} video={data} />;
           })}
-        {loader && <Loader />}
       </div>
     </div>
   );

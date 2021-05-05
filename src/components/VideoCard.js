@@ -1,37 +1,27 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FcBriefcase } from "react-icons/fc";
 import { GoVerified } from "react-icons/go";
-import {
-  ADD_TO_SAVED_VIDEOS,
-  isVideoInSaved,
-  REMOVE_FROM_HISTORY,
-  REMOVE_FROM_SAVED_VIDEOS,
-  ADD_TO_HISTORY,
-} from "../reducer/actions";
 import { useVideo } from "../context/videoLibraryContext";
-import { FaRegSave, FaSave } from "react-icons/fa";
-import { GrView } from "react-icons/gr";
 import axios from "axios";
 
 const VideoCard = ({ video }) => {
-  const { state, dispatch } = useVideo();
+  const { state,} = useVideo();
 
-  const addToSaved = (state, data) => {
-    // if (isVideoInSaved(state, data) === false) {
-    //   dispatch({ type: ADD_TO_SAVED_VIDEOS, payload: data });
-    // } else {
-    //   dispatch({ type: REMOVE_FROM_SAVED_VIDEOS, payload: data });
-    // }
-    try {
-      const { res } = axios.post(
-        "https://videolibrarybackend.shubambhasin.repl.co/saved",data);
-      const resp = res;
-      console.log(resp);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // const addToSaved = (state, data) => {
+  //   if (isVideoInSaved(state, data) === false) {
+  //     dispatch({ type: ADD_TO_SAVED_VIDEOS, payload: data });
+  //   } else {
+  //     dispatch({ type: REMOVE_FROM_SAVED_VIDEOS, payload: data });
+  //   }
+  //   try {
+  //     const { res } = axios.post(
+  //       "https://videolibrarybackend.shubambhasin.repl.co/saved",data);
+  //     const resp = res;
+  //     console.log(resp);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   const addToHistory = async (state, data) => {
     // dispatch({ type: REMOVE_FROM_HISTORY, payload: data });
