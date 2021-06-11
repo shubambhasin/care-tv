@@ -1,35 +1,74 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 require("dotenv").config();
 const Signup = () => {
-  const [signup, setSignup] = useState({
+  const [user, setUser] = useState({
     name: "",
     email: "",
     password: "",
-    // phoneNumber: "",
   });
-  const { setLogin, loader, setLoader } = useAuth();
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
+  const { setLogin, loader, setLoader, isUserLoggedIn } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if(isUserLoggedIn)
+    {
+      navigate('/')
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isUserLoggedIn]);
+
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setSignup({ ...signup, [name]: value });
+    setUser({ ...user, [name]: value });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(signup);
+    console.log(user);
     try {
       setLoader(true);
-      const res = await axios.post(
+      const response = await axios.post(
         "https://videolibrarybackend.shubambhasin.repl.co/signup",
-        signup
+        user
       );
       setLoader(false);
       setLogin(true);
-      navigate("/success");
-      console.log(res);
+      if (response.data.error) {
+        setErrors({
+          email: response.data.error.email,
+          password: response.data.error.password,
+        });
+      }
+      if (response.data.token) {
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            isUserLoggedIn: true,
+            username: response.data.name,
+            authToken: response.data.token,
+          })
+        );
+        navigate("/success");
+      } else {
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            isUserLoggedIn: false,
+            username: "",
+            authToken: "",
+          })
+        );
+      }
+      // navigate("/success");
+      console.log(response);
     } catch (err) {
       console.log(err);
     }
@@ -46,7 +85,7 @@ const Signup = () => {
               name="name"
               required
               placeholder="First Name..."
-              value={signup.name}
+              value={user.name}
               onChange={handleChange}
             />
           </div>
@@ -58,9 +97,14 @@ const Signup = () => {
               name="email"
               required
               placeholder="Email..."
-              value={signup.email}
+              value={user.email}
               onChange={handleChange}
             />
+            <div className="email-error">
+              <small>
+                <p className="f-red"> {errors.email}</p>
+              </small>
+            </div>
           </div>
           {/* <div className="flex flex-col gap-01">
             <label>Phone Number</label>
@@ -81,6 +125,11 @@ const Signup = () => {
               required
               onChange={handleChange}
             />
+            <div className="password-error">
+              <small>
+                <p className="f-red"> {errors.password}</p>
+              </small>
+            </div>
           </div>
           {/* <div className="flex flex-col gap-01">
             <label>Re-type Password</label>

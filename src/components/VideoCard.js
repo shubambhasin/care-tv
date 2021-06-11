@@ -3,9 +3,11 @@ import { Link } from "react-router-dom";
 import { GoVerified } from "react-icons/go";
 import { useVideo } from "../context/videoLibraryContext";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const VideoCard = ({ video }) => {
   const { state,} = useVideo();
+  const { authToken } = useAuth()
 
   // const addToSaved = (state, data) => {
   //   if (isVideoInSaved(state, data) === false) {
@@ -24,16 +26,17 @@ const VideoCard = ({ video }) => {
   // };
 
   const addToHistory = async (state, data) => {
-    // dispatch({ type: REMOVE_FROM_HISTORY, payload: data });
-    // dispatch({ type: ADD_TO_HISTORY, payload: data });
-
-    try {
-      const { res } = axios.post(
+       try {
+      const response = await axios.post(
         "https://videolibrarybackend.shubambhasin.repl.co/history",
-        data
+        {videoData: data},{
+          headers: { 
+            authorization: authToken
+          }
+        }
       );
-      const resp = res;
-      console.log(resp);
+
+      console.log(response);
     } catch (err) {
       console.error(err);
     }

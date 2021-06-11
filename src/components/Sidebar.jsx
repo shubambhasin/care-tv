@@ -14,13 +14,13 @@ const Sidebar = () => {
         </Link>
 
         <Link className="links flex aic gap-2" to="/liked">
-          <AiFillLike /> Liked ({state.likedVideos.length})
+          <AiFillLike /> Liked
         </Link>
         <Link className="links flex aic gap-2" to="/unliked">
-          <AiTwotoneDislike /> Unliked ({state.unlikedVideos.length})
+          <AiTwotoneDislike /> Unliked
         </Link>
         <Link className="links flex aic gap-2" to="/history">
-          <FaHistory /> History ({state.history.length})
+          <FaHistory /> History
         </Link>
         <Link className="links flex aic gap-2" to="/playlist">
           <MdPlaylistAdd /> Playlists

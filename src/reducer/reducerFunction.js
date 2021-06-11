@@ -22,7 +22,8 @@ import {
       case ADD_TO_SAVED_VIDEOS:
         return {
           ...state,
-          savedVideos: [...payload],
+          //TODO: savedVideos: [...payload],
+          savedVideos: payload,
         };
       case REMOVE_FROM_SAVED_VIDEOS:
         return {
@@ -55,7 +56,7 @@ import {
       case ADD_TO_HISTORY:
         return {
           ...state,
-          history: [...payload],
+          history: payload,
         };
       case REMOVE_FROM_HISTORY:
         return {

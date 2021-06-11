@@ -6,7 +6,7 @@ import logo from '../assets/logo.png'
 import { useAuth } from "../context/AuthContext";
 import { checkLogin } from "../reducer/actions";
 const Navbar = () => {
-  const { login, setLogin, user } = useAuth()
+  const { login, setLogin } = useAuth()
   const { state } = useVideo();
   return (
     <div className="navbar">
@@ -17,16 +17,15 @@ const Navbar = () => {
       </span>
       <span className="flex gap-4">
         <Link className="links" to="/saved">
-          Saved ({state.savedVideos.length})
+          Saved 
         </Link>
         <Link className="links" to="/history">
-          History ({state.history.length})
-        </Link>
+          History        </Link>
         <Link className="links" to="/playlists">
           Playlists
         </Link>
-        
-       <button className="btn btn-red" onClick={() => checkLogin(login, setLogin, user)}> <NavLink  to="/login">{login ? "Logout" : "Login"}</NavLink></button>
+
+       <button className="btn btn-red" onClick={() => checkLogin(login, setLogin, )}> <NavLink  to="/login">{login ? "Logout" : "Login"}</NavLink></button>
       </span>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { } from "react";
+import React from "react";
 import YouTube from "react-youtube";
 import { useVideo } from "../context/videoLibraryContext";
 import {
@@ -11,51 +11,46 @@ import { FaRegSave, FaSave } from "react-icons/fa";
 import Playlist from "../pages/Private/Playlist";
 import { usePlaylist } from "../context/playlist/PlaylistContext";
 import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 // ***************** player************************************ */
 const Player = ({ video }) => {
-  const { state} = useVideo();
-  const {
-    playlistState,
-    showPlaylist,
-    setShowPlaylist,
-  } = usePlaylist();
+  const { state } = useVideo();
+  const { playlistState, showPlaylist, setShowPlaylist } = usePlaylist();
+  const { authToken } = useAuth();
 
+ 
   // ADDING TO SAVED
-  const addToSaved = (state, data) => {
-    // if (isVideoInSaved(state, data) === false) {
-    //   dispatch({ type: ADD_TO_SAVED_VIDEOS, payload: data });
-    // } else {
-    //   dispatch({ type: REMOVE_FROM_SAVED_VIDEOS, payload: data });
-    // }
+  const addToSaved = async (data) => {
+    console.log("Auth token from inside add to videos", authToken)
     try {
-      const { res } = axios.post(
+      const response = await axios.post(
         "https://videolibrarybackend.shubambhasin.repl.co/saved",
-        data
+        {videoData: data},{
+          headers: { 
+            authorization: authToken
+          }
+        }
       );
-      const resp = res;
+      const resp = response;
       console.log(resp);
     } catch (err) {
       console.error(err);
     }
   };
-
   // ADDING TO LIKED VIDEOS / REMOVING FROM UNLIKED
-  const addToLiked = (state, data) => {
-    //TODO:
-    // if (isVideoInLiked(state, data) === false) {
-    //   dispatch({ type: ADD_TO_LIKED_VIDEOS, payload: data });
-    //   dispatch({ type: REMOVE_FROM_UNLIKED_VIDEOS, payload: data });
-    // } else {
-    //   dispatch({ type: REMOVE_FROM_LIKED_VIDEOS, payload: data });
-    // }
+  const addToLiked = async (state, data) => {
 
     try {
-      const { res } = axios.post(
+      const response = await axios.post(
         "https://videolibrarybackend.shubambhasin.repl.co/liked",
-        data
+        {videoData: data},{
+          headers: { 
+            authorization: authToken
+          }
+        }
       );
-      const resp = res;
+      const resp = response;
       console.log(resp);
     } catch (err) {
       console.error(err);
@@ -122,7 +117,7 @@ const Player = ({ video }) => {
               <AiTwotoneDislike size={28} />
             )}
           </span>
-          <button className="btn" onClick={() => addToSaved(state, video)}>
+          <button className="btn" onClick={() => addToSaved(video)}>
             {state.savedVideos.filter((data) => data._id === video._id)
               .length === 0 ? (
               <FaRegSave size={28} />

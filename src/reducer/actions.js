@@ -43,6 +43,7 @@ export const isWatched = (state, video) => {
 
 export const checkLogin = (login, setLogin) => {
   if (login) {
+    localStorage.removeItem('user')
     setLogin(false);
   }
 };

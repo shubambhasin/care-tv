@@ -1,13 +1,23 @@
 import axios from "axios";
-import React, {useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "./login.css";
 const Login = () => {
   const [user, setUser] = useState({ email: "", password: "" });
-  const [errors, setErrors] = useState("");
-  const { setLogin, loader, setLoader } = useAuth();
+  const [errors, setErrors] = useState({
+    email: "",
+    password: "",
+  });
+  const { setLogin, loader, setLoader, isUserLoggedIn } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isUserLoggedIn) {
+      navigate("/");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isUserLoggedIn]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,36 +27,38 @@ const Login = () => {
     e.preventDefault();
     console.log(user);
     try {
+      setErrors({ email: "", password: ""})
       setLoader(true);
-      const res = await axios.post(
-        "https://videolibrarybackend.shubambhasin.repl.co/signin",
+      const response = await axios.post(
+        "https://videolibrarybackend.shubambhasin.repl.co/login",
         user
       );
-      if (res.status === 200) {
-        setLoader(false);
+      console.log(response)
+      setLoader(false);
+      if (response.data.token) {
         setLogin(true);
-        navigate("/success");
-        const userId = res.data.user.userId;
-        console.log(userId);
         localStorage.setItem(
           "user",
-          JSON.stringify({ login: true, loginToken: userId })
+          JSON.stringify({
+            isUserLoggedIn: true,
+            username: response.data.name,
+            authToken: response.data.token,
+          })
         );
-      } else if (res.status === 401) {
-        setLoader(false);
-        console.log("password incorrect")
-        setErrors("password incorrect");
-      } else if (res.status === 404) {
-        setErrors("USer is not registered");
+        navigate("/success");
+      }
+      if (response.data.error) {
+        if (response.data.error.email) {
+          setErrors({ ...errors, email: response.data.error.email });
+        }
+        if (response.data.error.password) {
+          setErrors({ ...errors, password: response.data.error.password });
+        }
       }
     } catch (err) {
       setLoader(false);
-
-    setErrors("Incorrect credentials/ email not registered");
-
- 
-
-      console.log({"error" :err});
+      setErrors("Incorrect credentials/ email not registered");
+      console.log({ error: err });
     }
   };
   return (
@@ -64,7 +76,7 @@ const Login = () => {
               onChange={handleChange}
               required
             />
-            <small className="f-red bold">{errors}</small>
+            <small className="f-red bold">{errors.email}</small>
           </div>
           <div className="flex flex-col gap-01">
             <label>Password</label>
@@ -75,7 +87,7 @@ const Login = () => {
               onChange={handleChange}
               required
             />
-            <small className="f-red bold">{errors}</small>
+            <small className="f-red bold">{errors.password}</small>
           </div>
           <div className="flex aic gap-2">
             <button className="btn btn-blue">
