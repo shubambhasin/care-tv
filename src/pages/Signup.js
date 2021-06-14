@@ -41,7 +41,7 @@ const Signup = () => {
       );
       setLoader(false);
       setLogin(true);
-      if (response.data.error) {
+      if (response.data.success) {
         setErrors({
           email: response.data.error.email,
           password: response.data.error.password,
