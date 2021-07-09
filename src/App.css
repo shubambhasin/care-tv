@@ -33,8 +33,7 @@ body {
 }
 
 /* -----------------misc------------------------ */
-.links-black
-{
+.links-black {
   color: black;
 }
 .f-grey {
@@ -76,7 +75,10 @@ body {
 .default-img {
   width: 200px;
 }
-
+.container {
+  display: flex;
+  justify-content: center;
+}
 /* ----------------navigation----------------------- */
 .navbar {
   display: flex;
@@ -90,6 +92,21 @@ body {
   left: 0;
   z-index: var(--level-3);
   padding: 0 3rem;
+}
+.child-nav-full {
+  padding-left: 1rem;
+  border-radius: 5px;
+  margin-top: 70px;
+  height: 50px;
+  background-color: var(--accent-color);
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+
+  transition: 0.3s;
+  cursor: grab;
+  position: relative;
+  z-index: var(--level-1);
 }
 .child-nav {
   padding-left: 1rem;
@@ -117,43 +134,52 @@ body {
   background-color: rgb(0, 109, 160);
   border: 1px solid rgb(0, 93, 136);
 }
-.child-nav .categories {
+.child-nav .categories,
+.child-nav-full .categories {
   position: absolute;
   left: 1rem;
   padding-right: 1rem;
 }
-.child-nav .links-container {
+.child-nav .links-container,
+.child-nav-full .links-container {
   font-size: small;
   display: flex;
   align-items: center;
   height: 100%;
   margin-left: 6rem;
-  overflow-x: auto;
+  overflow-x: scroll;
 }
 
-.child-nav .links-container::-webkit-scrollbar {
+.child-nav .links-container::-webkit-scrollbar,
+.child-nav-full .links-container::-webkit-scrollbar {
   height: 5px;
 }
 /* Handle */
-.child-nav .links-container::-webkit-scrollbar-thumb {
+.child-nav .links-container::-webkit-scrollbar-thumb,
+.child-nav-full .links-container::-webkit-scrollbar-thumb {
   background: rgb(0, 140, 196);
 }
 
 /* Handle on hover */
-.child-nav .links-container::-webkit-scrollbar-thumb:hover {
+.child-nav .links-container::-webkit-scrollbar-thumb:hover,
+.child-nav-full .links-container::-webkit-scrollbar-thumb:hover {
   background: rgb(0, 106, 155);
 }
 
 .sidebar {
+  top: 70px;
+  width: 200px;
   border-radius: 5px;
   min-height: 100vh;
-  width: 200px;
   background-color: var(--accent-color);
   left: 0px;
   position: fixed;
-  top: 70px;
+  transition: 1s all;
+  
 }
+
 .sidebar-container {
+  transition: 1s all;
   padding: 2rem;
   display: flex;
   flex-direction: column;
@@ -162,10 +188,14 @@ body {
 }
 
 /* --------------------------------------- */
-
+.full-container {
+  margin: 2rem auto;
+}
 .content-container {
+  margin: 2rem auto;
   margin-top: 1rem;
   margin-left: 210px;
+  color: black;
 }
 
 /* ------------------------------Video card---------------------- */
@@ -186,53 +216,27 @@ body {
   height: 150px;
 }
 
-.video-info
-{
+.video-info {
   padding: 1rem;
   display: flex;
   flex-direction: column;
 }
-.channel-name
-{
+.channel-name {
   height: 100%;
 }
-/* .video-card {
-  display: flex;
-  flex-direction: column;
-  max-width: 250px;
-  height: max-content;
-  border-radius: 5px;
-}
-.video-card img {
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
-}
-.video-card:hover {
-}
-.video-info-flex {
-  display: flex;
-  justify-content: space-between;
-}
-.video-icon {
-  flex: 20%;
-  font-size: small;
-}
-.video-info {
-  flex: 80%;
-  font-size: small;
-} */
 
 /* --------------------video-card-horizontal------------------------ */
-
+.jsfs{
+  justify-self: flex-start;
+}
 .saved-card-container {
   display: flex;
   flex-direction: column;
 }
 
 .video-card-horizontal {
+  width: 100%;
   display: flex;
-  justify-content:flex-start;
-
 }
 .video-card-horizontal .btn {
   align-self: center;
@@ -263,8 +267,12 @@ body {
   width: 320px;
   min-height: 400px;
 }
-.block-center
-{
+.block-center {
   display: grid;
   place-items: center;
+}
+
+.player {
+  width: 90%;
+  margin: auto;
 }

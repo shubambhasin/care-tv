@@ -7,6 +7,8 @@ import axios from "axios";
 import { ADD_TO_LIKED_VIDEOS } from "../../reducer/actions";
 import Loader from "../../components/loader/Loader";
 import { useAuth } from "../../context/AuthContext";
+import { instance } from "../../api/axiosapi";
+import { notify } from "../../utils/notification";
 const Liked = () => {
   const { state, dispatch, loader, setLoader } = useVideo();
   const { isUserLoggedIn, authToken } = useAuth();
@@ -19,27 +21,22 @@ const Liked = () => {
       // setIsLoader(true);
       try {
         setLoader(true);
-        const response = await axios.get(
-          "https://videolibrarybackend.shubambhasin.repl.co/liked",
-          {
-            headers: {
-              authorization: authToken,
-            },
-          }
-        );
-        console.log(response.data);
-        if (response.data.error) {
-          setError({
-            ...error,
-            auth: "Authentication error, please login again",
-          });
-        } else {
-          setLoader(false);
-          console.log(response.data);
+        const response = await instance.get("/liked");
+        setLoader(false);
+        console.log(response);
+        if (response.data.success) {
+          notify("Data fetched successfully ✅");
           dispatch({
             type: ADD_TO_LIKED_VIDEOS,
             payload: response.data.videos[0].videos,
           });
+          if (response.data.error) {
+            notify("Cannot fetch data, error occured ❌     ");
+            setError({
+              ...error,
+              auth: "Authentication error, please login again",
+            });
+          }
         }
       } catch (error) {
         console.log({ error });

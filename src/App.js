@@ -1,3 +1,4 @@
+import React, { useEffect } from "react";
 import { Route, Routes } from "react-router";
 import "./App.css";
 import ChildNav from "./components/ChildNav";
@@ -13,16 +14,35 @@ import Login from "./pages/Login";
 import PlaylistPage from "./pages/Private/PlaylistPage";
 import Signup from "./pages/Signup";
 import Success from "./pages/Success";
+import { useSidebar } from "./context/sidebarContext";
+import { useAuth } from "./context/AuthContext";
+import { instance } from "./api/axiosapi";
 
+import { Toaster } from "react-hot-toast";
 function App() {
+  const { authToken } = useAuth();
+  instance.defaults.headers.common["Authorization"] = authToken || "";
+  const { sidebarOpen, setSidebarOpen } = useSidebar();
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth < 768) {
+        setSidebarOpen(false);
+      } else {
+        setSidebarOpen(true);
+      }
+    }
+    window.addEventListener("resize", handleResize);
+    return () => {
+      handleResize();
+    };
+  }, []);
 
- 
   return (
     <div className="App">
+      <Toaster />
       <Navbar />
       <ChildNav />
-      <Sidebar />
-      
+      {sidebarOpen && <Sidebar />}
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/login" element={<Login />} />

@@ -7,10 +7,14 @@ import { ADD_TO_SAVED_VIDEOS } from "../../reducer/actions";
 import axios from "axios";
 import Loader from "../../components/loader/Loader";
 import { useAuth } from "../../context/AuthContext";
+import { instance } from "../../api/axiosapi";
+import { notify } from "../../utils/notification";
+import { useSidebar } from "../../context/sidebarContext";
 
 const Saved = () => {
   const { state, dispatch, loader, setLoader } = useVideo();
   const { isUserLoggedIn, authToken } = useAuth();
+  const { sidebarOpen } = useSidebar();
   const [error, setError] = useState({
     auth: "",
   });
@@ -20,27 +24,21 @@ const Saved = () => {
       // setIsLoader(true);
       try {
         setLoader(true);
-        const response = await axios.get(
-          "https://videolibrarybackend.shubambhasin.repl.co/saved",
-          {
-            headers: {
-              authorization: authToken,
-            },
-          }
-        );
-
-        // console.log("Line 32", response);
-        if (response.error) {
-          setError({
-            ...error,
-            auth: "Authentication error, please login again",
-          });
-        } else {
-          setLoader(false);
-          // console.log(response.data);
+        const response = await instance.get("/saved");
+        setLoader(false);
+        console.log(response);
+        if (response.data.success) {
+          notify("Data fetched successfully");
           dispatch({
             type: ADD_TO_SAVED_VIDEOS,
             payload: response.data.videos[0].videos,
+          });
+        }
+        if (response.data.error) {
+          notify("Some thing bad happened");
+          setError({
+            ...error,
+            auth: "Authentication error, please login again",
           });
         }
       } catch (error) {
@@ -52,7 +50,11 @@ const Saved = () => {
   }, [isUserLoggedIn]);
 
   return (
-    <div className="saved content-container">
+    <div
+      className={`saved ${sidebarOpen && "content-container"} ${
+        !sidebarOpen && "full-container"
+      } `}
+    >
       <h1 className="h1 f-red t-center">{error.auth}</h1>
       {loader && <Loader />}
       {!loader && (

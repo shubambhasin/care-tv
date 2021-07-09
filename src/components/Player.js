@@ -12,6 +12,8 @@ import Playlist from "../pages/Private/Playlist";
 import { usePlaylist } from "../context/playlist/PlaylistContext";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { notify } from "../utils/notification";
+import { instance } from "../api/axiosapi";
 
 // ***************** player************************************ */
 const Player = ({ video }) => {
@@ -19,23 +21,32 @@ const Player = ({ video }) => {
   const { playlistState, showPlaylist, setShowPlaylist } = usePlaylist();
   const { authToken } = useAuth();
 
+  const opts = {
+    width: '100%',
+    playerVars: {
+      autoplay: 1,
+    },
+  };
+
  
   // ADDING TO SAVED
   const addToSaved = async (data) => {
     console.log("Auth token from inside add to videos", authToken)
     try {
-      const response = await axios.post(
-        "https://videolibrarybackend.shubambhasin.repl.co/saved",
-        {videoData: data},{
-          headers: { 
-            authorization: authToken
-          }
-        }
+      const response = await instance.post(
+        "/saved",
+        {videoData: data}
       );
-      const resp = response;
-      console.log(resp);
+      console.log(response);
+      if (response.data.success) {
+        notify("Added successfully ✅");
+      }
+      if (response.data.error) {
+        notify("Error occured while adding ❌");
+      }
     } catch (err) {
       console.error(err);
+      notify("Error occured while adding ❌");
     }
   };
   // ADDING TO LIKED VIDEOS / REMOVING FROM UNLIKED
@@ -50,14 +61,18 @@ const Player = ({ video }) => {
           }
         }
       );
-      const resp = response;
-      console.log(resp);
+
+      console.log(response);
+      if(response.data.success)
+      {
+        notify("Video liked ✅")
+      }
     } catch (err) {
       console.error(err);
+      notify("Error occured while liking the video ❌")
     }
   };
 
-  // ADDING TO UNLIKED VIDEOS / REMOVING FROM LIKED VIDEOS
   const addToUnliked = (state, data) => {
     //TODO: unliked video
     // if (isVideoInUnliked(state, data) === false) {
@@ -78,12 +93,6 @@ const Player = ({ video }) => {
     }
   };
 
-  // add to history
-  //TODO:
-  // const addToHistory = (state, data) => {
-  //   dispatch({ type: REMOVE_FROM_HISTORY, payload: data });
-  //   dispatch({ type: ADD_TO_HISTORY, payload: data });
-  // };
 
   const handlePlaylist = (video) => {
     console.log(video._id);
@@ -93,7 +102,7 @@ const Player = ({ video }) => {
 
   return (
     <div className="player">
-      <YouTube videoId={`${video.videoId}`} />
+      <YouTube videoId={`${video.videoId}`} opts={opts}/>
       <h1 className="h3">{video.name} </h1>
       <div className="flex">
         <span>

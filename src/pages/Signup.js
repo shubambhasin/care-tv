@@ -42,10 +42,10 @@ const Signup = () => {
       setLoader(false);
       setLogin(true);
       if (response.data.success) {
-        setErrors({
-          email: response.data.error.email,
-          password: response.data.error.password,
-        });
+        // setErrors({
+        //   email: response.data.error.email,
+        //   password: response.data.error.password,
+        // });
       }
       if (response.data.token) {
         localStorage.setItem(

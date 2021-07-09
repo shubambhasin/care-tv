@@ -46,30 +46,22 @@ const VideoCardHorizontal = ({ video }) => {
   };
 
   return (
-    <div className="video-card-horizontal">
+    <div className="video-card-horizontal aic ">
       <Link to={`/watch/${video.videoId}`}>
         <img src={`${video.thumbnail}`} className="responsive" alt="sdfg" />
       </Link>
-      <div className="video-info-flex p1-rem">
-        <div className="video-icon">
-          <FcBriefcase size={28} />
-        </div>
-        <div className="video-info">
+      <div className="flex jcc jcc p1-rem">
+        <div className=" flex-col">
           <h1 className=" h5 bold">Name: {video.name}</h1>
-          <p>Channel name</p>
-          <span>20l views</span> * <span>{video.timeAgo}</span>
+        <Link
+          to={`/watch/${video.videoId}`}
+          onClick={() => addToHistory(state, video)}
+          className="btn btn-sm btn-green jsfs"
+        >
+          Watch
+        </Link>
         </div>
       </div>
-      <Link
-        to={`/watch/${video.videoId}`}
-        onClick={() => addToHistory(state, video)}
-        className="btn btn-green"
-      >
-        Watch now
-      </Link>
-      <button className="btn btn-blue" onClick={() => addToSaved(state, video)}>
-        Save
-      </button>
     </div>
   );
 };

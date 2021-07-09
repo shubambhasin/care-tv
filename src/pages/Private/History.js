@@ -8,9 +8,13 @@ import axios from "axios";
 import { ADD_TO_HISTORY } from "../../reducer/actions";
 import { useAuth } from "../../context/AuthContext";
 import Loader from "../../components/loader/Loader";
+import { instance } from "../../api/axiosapi";
+import { notify } from "../../utils/notification";
+import { useSidebar } from "../../context/sidebarContext";
 const History = () => {
   const { state, dispatch, loader, setLoader } = useVideo();
   const { isUserLoggedIn, authToken } = useAuth();
+  const { sidebarOpen } = useSidebar()
   const [error, setError] = useState({
     auth: "",
   });
@@ -19,36 +23,38 @@ const History = () => {
     (async () => {
       // setIsLoader(true);
       try {
-        setLoader(true)
-        const response = await axios.get(
-          "https://videolibrarybackend.shubambhasin.repl.co/history",
-          {
-            headers: {
-              authorization: authToken,
-            },
-          }
-        );
-
-        console.log(response.data[0].videos)
-        if (response.error) {
+        setLoader(true);
+        const response = await instance.get("/history");
+        console.log(response);
+        if (response.data.error) {
+          notify("Errror occured ❌");
           setError({
             ...error,
             auth: "Authentication error, please login again",
           });
-        } else {
-
+        }
+        if (response.data.success) {
           setLoader(false);
-          dispatch({ type: ADD_TO_HISTORY, payload: response.data[0].videos });
+          if (response.data.history.length !== 0) {
+            notify("Data fetch successfully ✅");
+            dispatch({
+              type: ADD_TO_HISTORY,
+              payload: response.data.history[0].videos,
+            });
+          }
+          if (response.data.history.length === 0) {
+            dispatch({ type: ADD_TO_HISTORY, payload: [] });
+          }
         }
       } catch (error) {
         console.log({ error });
       }
     })();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserLoggedIn]);
 
   return (
-    <div className="history content-container">
+    <div className={`history ${sidebarOpen && " content-container"} ${!sidebarOpen && "full-container"}`}>
       <h1 className="h1 f-red t-center">{error.auth}</h1>
       {loader && <Loader />}
       {!loader && (

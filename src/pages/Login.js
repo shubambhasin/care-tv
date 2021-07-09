@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useSidebar } from "../context/sidebarContext";
 import "./login.css";
 const Login = () => {
   const [user, setUser] = useState({ email: "", password: "" });
@@ -9,6 +10,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const {setSidebarOpen, sidebarOpen} = useSidebar()
   const { setLogin, loader, setLoader, isUserLoggedIn } = useAuth();
   const navigate = useNavigate();
 
@@ -18,6 +20,19 @@ const Login = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserLoggedIn]);
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth < 768) {
+        setSidebarOpen(false);
+      } else {
+        setSidebarOpen(true);
+      }
+    }
+    window.addEventListener("resize", handleResize);
+    return () => {
+      handleResize();
+    };
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -62,7 +77,7 @@ const Login = () => {
     }
   };
   return (
-    <div className="login container content-container block-center">
+    <div className={`login container ${sidebarOpen && " content-container block-center"} ${!sidebarOpen && "full-container"}`}>
       <h1 className="h2 mb1-rem">Login</h1>
       <div className="login-container p1-rem">
         <form className="flex flex-col gap-2" onSubmit={handleLogin}>

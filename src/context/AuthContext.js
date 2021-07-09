@@ -9,21 +9,24 @@ export const AuthProvider = ({ children }) => {
     authToken: null,
   };
   console.log(userinfo);
-  const { isUserLoggedIn, username, authToken } = userinfo;
-
-  const [login, setLogin] = useState(isUserLoggedIn);
+  const { isUserLoggedIn } = userinfo;
+  const [authToken, setAuthToken] = useState(userinfo.authToken);
+  const [login, setLogin] = useState(userinfo.isUserLoggedIn);
   const [loader, setLoader] = useState(false);
+  const [username, setUsername] = useState(userinfo.username);
 
   return (
     <AuthContext.Provider
       value={{
+        authToken,
+        setAuthToken,
         login,
         setLogin,
         loader,
         setLoader,
         isUserLoggedIn,
         username,
-        authToken,
+        setUsername,
       }}
     >
       {children}
