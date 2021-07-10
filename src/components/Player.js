@@ -53,14 +53,8 @@ const Player = ({ video }) => {
   const addToLiked = async (state, data) => {
 
     try {
-      const response = await axios.post(
-        "https://videolibrarybackend.shubambhasin.repl.co/liked",
-        {videoData: data},{
-          headers: { 
-            authorization: authToken
-          }
-        }
-      );
+      const response = await instance.post("/liked",
+        {videoData: data});
 
       console.log(response);
       if(response.data.success)
@@ -75,12 +69,7 @@ const Player = ({ video }) => {
 
   const addToUnliked = (state, data) => {
     //TODO: unliked video
-    // if (isVideoInUnliked(state, data) === false) {
-    //   dispatch({ type: ADD_TO_UNLIKED_VIDEOS, payload: data });
-    //   dispatch({ type: REMOVE_FROM_LIKED_VIDEOS, payload: data });
-    // } else {
-    //   dispatch({ type: REMOVE_FROM_UNLIKED_VIDEOS, payload: data });
-    // }
+
     try {
       const { res } = axios.post(
         "https://videolibrarybackend.shubambhasin.repl.co/unliked",
@@ -117,7 +106,7 @@ const Player = ({ video }) => {
               <AiTwotoneLike size={28} />
             )}
           </button>
-          <span onClick={() => addToUnliked(state, video)}>
+          {/* <span onClick={() => addToUnliked(state, video)}>
             {state.unlikedVideos.filter(
               (data) => data.videoId === video.videoId
             ).length === 0 ? (
@@ -125,7 +114,7 @@ const Player = ({ video }) => {
             ) : (
               <AiTwotoneDislike size={28} />
             )}
-          </span>
+          </span> */}
           <button className="btn" onClick={() => addToSaved(video)}>
             {state.savedVideos.filter((data) => data._id === video._id)
               .length === 0 ? (

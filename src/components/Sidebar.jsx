@@ -19,9 +19,7 @@ const Sidebar = () => {
           <Link className="links flex aic gap-2" to="/liked">
             <AiFillLike /> Liked
           </Link>
-          <Link className="links flex aic gap-2" to="/unliked">
-            <AiTwotoneDislike /> Unliked
-          </Link>
+         
           <Link className="links flex aic gap-2" to="/history">
             <FaHistory /> History
           </Link>

@@ -52,7 +52,6 @@ function App() {
         <Route path="/saved" element={<Saved />} />
         <Route path="/history" element={<History />} />
         <Route path="/liked" element={<Liked />} />
-        <Route path="/unliked" element={<Unliked />} />
         <Route path="/playlist" element={<PlaylistPage />} />
         <Route path="/success" element={<Success />} />
       </Routes>

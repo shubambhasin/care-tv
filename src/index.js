@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
 import { FilterProvider } from "./context/filterContext";
@@ -10,7 +10,7 @@ import { SidebarProvider } from "./context/sidebarContext";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <SidebarProvider>
         <PlaylistProvider>
           <FilterProvider>
@@ -22,7 +22,7 @@ ReactDOM.render(
           </FilterProvider>
         </PlaylistProvider>
       </SidebarProvider>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );
