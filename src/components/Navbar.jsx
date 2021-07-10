@@ -15,7 +15,7 @@ const Navbar = () => {
           <img src={logo} className="brand-logo" alt="logo" />
         </Link>
       </span>
-      <span className="flex gap-4">
+      <span className="flex gap-2">
         <Link className="links" to="/saved">
           Saved 
         </Link>
