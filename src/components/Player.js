@@ -39,7 +39,7 @@ const Player = ({ video }) => {
       );
       console.log(response);
       if (response.data.success) {
-        notify("Added successfully ✅");
+        notify("Added to saved videos✅");
       }
       if (response.data.error) {
         notify("Error occured while adding ❌");
@@ -49,7 +49,7 @@ const Player = ({ video }) => {
       notify("Error occured while adding ❌");
     }
   };
-  // ADDING TO LIKED VIDEOS / REMOVING FROM UNLIKED
+
   const addToLiked = async (state, data) => {
 
     try {
@@ -94,10 +94,10 @@ const Player = ({ video }) => {
       <YouTube videoId={`${video.videoId}`} opts={opts}/>
       <h1 className="h3">{video.name} </h1>
       <div className="flex">
+        <span className="flex aic jcc">
         <span>
           <p>20k views</p>
         </span>
-        <span>
           <button className="btn" onClick={() => addToLiked(state, video)}>
             {state.likedVideos.filter((data) => data.videoId === video.videoId)
               .length === 0 ? (

@@ -11,20 +11,16 @@ const Watching = () => {
   const { videoId } = useParams();
   const { sidebarOpen, setSidebarOpen } = useSidebar();
   useEffect(() => {
+ 
     (async () => {
       try {
-        // setLoader(true);
+
         const videoData = await axios.get(
           "https://videolibrarybackend.shubambhasin.repl.co/videos"
         );
-        // setLoader(false)
-
         console.log(videoData.data.data);
-        // setAbc(videoData.data.data);
-        // console.log(abc);
         dispatch({ type: ADD_ALL_VIDEOS, payload: videoData.data.data });
       } catch (err) {
-        // setLoader(false)
         console.log(err);
       }
     })();
@@ -39,6 +35,7 @@ const Watching = () => {
         setSidebarOpen(true);
       }
     }
+    handleResize()
 
     window.addEventListener("resize", handleResize);
 
@@ -56,7 +53,7 @@ const Watching = () => {
       {state.allVideos
         .filter((data) => data.videoId === videoId)
         .map((video) => {
-          return <Player key={video.videoId} video={video} />;
+          return <Player key={video._id} video={video} />;
         })}
     </div>
   );

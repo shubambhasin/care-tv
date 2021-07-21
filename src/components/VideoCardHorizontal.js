@@ -4,46 +4,44 @@ import { FcBriefcase } from "react-icons/fc";
 import { ADD_TO_HISTORY } from "../reducer/actions";
 import { useVideo } from "../context/videoLibraryContext";
 import axios from "axios";
+import { notify } from "../utils/notification";
 
 const VideoCardHorizontal = ({ video }) => {
   const { state, dispatch } = useVideo();
 
-  const addToSaved = (state, data) => {
-    //TODO: remove the code
-    // if (isVideoInSaved(state, data) === false) {
-    //   dispatch({ type: ADD_TO_SAVED_VIDEOS, payload: data });
-    // } else {
-    //   dispatch({ type: REMOVE_FROM_SAVED_VIDEOS, payload: data });
-    // }
+  // const addToSaved = (state, data) => {
+   
+  //   try {
+  //     const response = axios.post(
+  //       "https://videolibrarybackend.shubambhasin.repl.co/saved",
+  //       data
+  //     );
+      
+  //     console.log(response);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
+  const addToHistory = async (state, data) => {
+  
     try {
-      const { res } = axios.post(
-        "https://videolibrarybackend.shubambhasin.repl.co/saved",
-        data
-      );
-      const resp = res;
-      console.log(resp);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const addToHistory = (state, data) => {
-    // dispatch({ type: REMOVE_FROM_HISTORY, payload: data });
-    // dispatch({ type: ADD_TO_HISTORY, payload: data });
-    (async () => {
-      // setIsLoader(true);
-      try {
-        const { data } = await axios.get(
+        const response = await axios.get(
           "https://videolibrarybackend.shubambhasin.repl.co/history"
         );
-        console.log(data.data);
-        dispatch({ type: ADD_TO_HISTORY, payload: data });
+       console.log(response);
+       if(response.data.success)
+       {
+        console.log(response.data.history);
+        dispatch({ type: ADD_TO_HISTORY, payload: response.data.history });
+       }
+       else{
+        notify("Error occured")
+       }
       } catch (error) {
         console.log({ error });
       }
-    })();
-  };
+   };
 
   return (
     <div className="video-card-horizontal aic ">

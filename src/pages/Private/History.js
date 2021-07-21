@@ -4,7 +4,6 @@ import { useVideo } from "../../context/videoLibraryContext";
 
 import history from "../../assets/history.svg";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { ADD_TO_HISTORY } from "../../reducer/actions";
 import { useAuth } from "../../context/AuthContext";
 import Loader from "../../components/loader/Loader";
@@ -13,15 +12,15 @@ import { notify } from "../../utils/notification";
 import { useSidebar } from "../../context/sidebarContext";
 const History = () => {
   const { state, dispatch, loader, setLoader } = useVideo();
-  const { isUserLoggedIn, authToken } = useAuth();
-  const { sidebarOpen } = useSidebar()
+  const { isUserLoggedIn } = useAuth();
+  const { sidebarOpen } = useSidebar();
   const [error, setError] = useState({
     auth: "",
   });
 
   useEffect(() => {
     (async () => {
-      // setIsLoader(true);
+
       try {
         setLoader(true);
         const response = await instance.get("/history");
@@ -53,12 +52,29 @@ const History = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserLoggedIn]);
 
+  const clearHistory = async () => {
+    try {
+      const response = await instance.delete("/history");
+      if (response.data.success) {
+        notify("History deleted successfully ✅");
+        dispatch({ type: ADD_TO_HISTORY, payload: [] });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div className={`history ${sidebarOpen && " content-container"} ${!sidebarOpen && "full-container"}`}>
+    <div
+      className={`history ${sidebarOpen && " content-container"} ${
+        !sidebarOpen && "full-container"
+      }`}
+    >
       <h1 className="h1 f-red t-center">{error.auth}</h1>
       {loader && <Loader />}
       {!loader && (
-        <span>
+        <div className="flex flex-col">
+          
           {state.history.length === 0 ? (
             <span className="center-banners flex-col f-grey">
               <img src={history} className="default-img" alt="history-png" />
@@ -71,13 +87,18 @@ const History = () => {
             </span>
           ) : (
             <>
-              History
+            <div className="flex aic gap-3 mb1-rem">
+            <h1 className="h2">History</h1>
+            <button className="btn btn-outline" onClick={clearHistory}>
+              Clear History
+            </button>
+          </div>
               {state.history.map((data) => {
                 return <VideoCardHorizontal key={data._id} video={data} />;
               })}
             </>
           )}
-        </span>
+        </div>
       )}
     </div>
   );

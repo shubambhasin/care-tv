@@ -49,6 +49,18 @@ const Saved = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserLoggedIn]);
 
+  const clearSaved = async () => {
+    try {
+      const response = await instance.delete("/saved");
+      if (response.data.success) {
+        notify("Saved videos cleared successfully ✅");
+        dispatch({ type: ADD_TO_SAVED_VIDEOS, payload: [] });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div
       className={`saved ${sidebarOpen && "content-container"} ${
@@ -69,6 +81,12 @@ const Saved = () => {
             </span>
           ) : (
             <>
+              <div className="flex  mb1-rem gap-3 aic">
+                <h1 className="h2">Saved videos</h1>
+                <button onClick={clearSaved} className="btn btn-outline">
+                  Clear All
+                </button>
+              </div>
               {state.savedVideos.map((data) => {
                 return <VideoCardHorizontal key={data._id} video={data} />;
               })}

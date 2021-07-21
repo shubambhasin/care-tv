@@ -9,9 +9,11 @@ import Loader from "../../components/loader/Loader";
 import { useAuth } from "../../context/AuthContext";
 import { instance } from "../../api/axiosapi";
 import { notify } from "../../utils/notification";
+import { useSidebar } from "../../context/sidebarContext";
 const Liked = () => {
   const { state, dispatch, loader, setLoader } = useVideo();
   const { isUserLoggedIn, authToken } = useAuth();
+  const { sidebarOpen } = useSidebar();
   const [error, setError] = useState({
     auth: "",
   });
@@ -45,8 +47,24 @@ const Liked = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUserLoggedIn]);
 
+  const clearLiked = async () => {
+    try {
+      const response = await instance.delete("/liked");
+      if (response.data.success) {
+        notify("Cleared successfully ✅");
+        dispatch({ type: ADD_TO_LIKED_VIDEOS, payload: [] });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-    <div className="liked content-container">
+    <div
+      className={`liked  ${sidebarOpen && " content-container"} ${
+        !sidebarOpen && "full-container"
+      }`}
+    >
       <h1 className="h1 f-red t-center">{error.auth}</h1>
       {loader && <Loader />}
       {!loader && (
@@ -61,6 +79,13 @@ const Liked = () => {
             </span>
           ) : (
             <>
+              <div className="flex aic gap-3 mb1-rem">
+                <h1 className="h2">Liked</h1>
+                <button className="btn btn-outline" onClick={clearLiked}>
+                  Clear Liked Videos
+                </button>
+              </div>
+
               {state.likedVideos.map((data, index) => {
                 return <VideoCardHorizontal key={index} video={data} />;
               })}

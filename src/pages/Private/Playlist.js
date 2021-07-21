@@ -5,14 +5,11 @@ import {
   isVideoInPlaylist,
 } from "../../context/playlist/playlistActions";
 import { usePlaylist } from "../../context/playlist/PlaylistContext";
+import { notify } from "../../utils/notification";
 
 const Playlist = ({ video }) => {
   const [newPlaylist, setNewPlaylist] = useState("");
-  const {
-    playlistState,
-    dispatchPlaylist,
-    setShowPlaylist,
-  } = usePlaylist();
+  const { playlistState, dispatchPlaylist, setShowPlaylist } = usePlaylist();
 
   const addNewPlaylist = () => {
     //TODO: toast alert
@@ -20,10 +17,11 @@ const Playlist = ({ video }) => {
     console.log(playlistState.playlist);
   };
 
-  // for adding video to the playlist
   const addVideoToPlaylist = (video, playlistId) => {
     if (isVideoInPlaylist(video, playlistId, playlistState, dispatchPlaylist)) {
+      notify("Video already in playlist ✅");
     } else {
+      notify("Video added in playlist ✅");
       dispatchPlaylist({
         type: ADD_VIDEO_TO_PLAYLIST,
         payload: { video: video, playlistId: playlistId },

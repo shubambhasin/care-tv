@@ -14,18 +14,18 @@ const ChildNav = () => {
         Categories:
       </Link>
       <span className="links-container">
-        <Link className="links child-nav-item" to="/">
+        {/* <Link className="links child-nav-item" to="/">
           Child Care
-        </Link>
+        </Link> */}
         <Link className="links child-nav-item" to="/">
           Mothers Care
         </Link>
-        <Link className="links child-nav-item" to="/">
+        {/* <Link className="links child-nav-item" to="/">
           Pregnancy
         </Link>
         <Link className="links child-nav-item" to="/">
           Baby food
-        </Link>
+        </Link> */}
         <button className="btn" onClick={() => setSidebarOpen(!sidebarOpen)}>Toggle</button>
       </span>
     </div>

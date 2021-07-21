@@ -12,18 +12,18 @@ const Sidebar = () => {
     <>
       <div className="sidebar">
         <span className="sidebar-container">
-          <Link className="links flex aic gap-2" to="/saved">
+          <Link className="links flex aic gap-2 links-hover" to="/saved">
             <FaSave /> Saved
           </Link>
 
-          <Link className="links flex aic gap-2" to="/liked">
+          <Link className="links flex aic gap-2 links-hover" to="/liked">
             <AiFillLike /> Liked
           </Link>
          
-          <Link className="links flex aic gap-2" to="/history">
+          <Link className="links flex aic gap-2 links-hover" to="/history">
             <FaHistory /> History
           </Link>
-          <Link className="links flex aic gap-2" to="/playlist">
+          <Link className="links flex aic gap-2 links-hover" to="/playlist">
             <MdPlaylistAdd /> Playlists
           </Link>
         </span>
