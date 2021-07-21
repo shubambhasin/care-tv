@@ -1,60 +1,102 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FcBriefcase } from "react-icons/fc";
-import {
-  ADD_TO_SAVED_VIDEOS,
-  isVideoInSaved,
-  REMOVE_FROM_HISTORY,
-  REMOVE_FROM_SAVED_VIDEOS,
-  ADD_TO_HISTORY,
-} from "../reducer/actions";
+import { GoVerified } from "react-icons/go";
 import { useVideo } from "../context/videoLibraryContext";
+import axios from "axios";
+import { useAuth } from "../context/AuthContext";
 
 const VideoCard = ({ video }) => {
-  const { state, dispatch } = useVideo();
+  const { state,} = useVideo();
+  const { authToken } = useAuth()
 
-  const addToSaved = (state, data) => {
-    if (isVideoInSaved(state, data) === false) {
-      dispatch({ type: ADD_TO_SAVED_VIDEOS, payload: data });
-    } else {
-      dispatch({ type: REMOVE_FROM_SAVED_VIDEOS, payload: data });
+  // const addToSaved = (state, data) => {
+  //   if (isVideoInSaved(state, data) === false) {
+  //     dispatch({ type: ADD_TO_SAVED_VIDEOS, payload: data });
+  //   } else {
+  //     dispatch({ type: REMOVE_FROM_SAVED_VIDEOS, payload: data });
+  //   }
+  //   try {
+  //     const { res } = axios.post(
+  //       "https://videolibrarybackend.shubambhasin.repl.co/saved",data);
+  //     const resp = res;
+  //     console.log(resp);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
+
+  const addToHistory = async (state, data) => {
+       try {
+      const response = await axios.post(
+        "https://videolibrarybackend.shubambhasin.repl.co/history",
+        {videoData: data},{
+          headers: { 
+            authorization: authToken
+          }
+        }
+      );
+
+      console.log(response);
+    } catch (err) {
+      console.error(err);
     }
   };
 
-  const addToHistory = (state, data) => {
-    dispatch({ type: REMOVE_FROM_HISTORY, payload: data });
-    dispatch({ type: ADD_TO_HISTORY, payload: data });
-  };
-
   return (
+   
     <div className="video-card">
-      <Link to={`/watch/${video.id}`}>
+      <Link
+        className="flex-1"
+        onClick={() => addToHistory(state, video)}
+        to={`/watch/${video.videoId}`}
+      >
         <img
-          src="https://i.ytimg.com/vi/l1RSDqTx0Wg/hq720.jpg?sqp=-oaymwEcCNAFEJQDSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCrCAUXizWeKC7tBNvMHUE3aRESlg"
-          alt="video-thumbnail"
+          src={`${video.thumbnail}`}
           className="responsive"
+          alt="videoThumbnail"
         />
       </Link>
-      <div className="video-info-flex p1-rem">
-        <div className="video-icon">
-          <FcBriefcase size={28} />
-        </div>
-        <div className="video-info">
-          <h1 className=" h5 bold">Name: {video.name}</h1>
-          <p>Channel name</p>
-          <span>20l views</span> * <span>{video.timeAgo}</span>
-        </div>
+      <div className="video-info">
+        <Link
+          className="links-black"
+          onClick={() => addToHistory(state, video)}
+          to={`/watch/${video.videoId}`}
+        >
+          <h2 className="h5 bold">{video.name}</h2>
+        </Link>
+        <p>
+          <small className="channel-name">
+            {video.category}
+            <GoVerified />
+          </small>
+        </p>
+        <small>{Math.floor(Math.random() * 100)}M views</small>
       </div>
-      <Link
-        to={`/watch/${video.id}`}
-        onClick={() => addToHistory(state, video)}
-        className="btn btn-green"
-      >
-        Watch now
-      </Link>
-      <button className="btn btn-blue" onClick={() => addToSaved(state, video)}>
-        Save
-      </button>
+     
+     {/* //TODO: for save button on homepage */}
+     
+      {/* <span className="flex">
+        <Link
+          to={`/watch/${video.videoId}`}
+          onClick={() => addToHistory(state, video)}
+          className="btn"
+          title="Watch"
+        >
+          <GrView size={28} />
+        </Link>
+        <button
+          title="Save"
+          className="btn flex aic"
+          onClick={() => addToSaved(state, video)}
+        >
+          {state.savedVideos.filter((data) => data._id === video._id).length ===
+          0 ? (
+            <FaRegSave size={28} />
+          ) : (
+            <FaSave size={28} />
+          )}
+        </button>
+      </span> */}
     </div>
   );
 };
