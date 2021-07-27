@@ -5,21 +5,28 @@ import { useAuth } from "../context/AuthContext";
 import { useSidebar } from "../context/sidebarContext";
 import "./login.css";
 const Login = () => {
-  const [user, setUser] = useState({ email: "", password: "" });
+
+  const GUEST_EMAIL = process.env.REACT_APP_GUEST_EMAIL;
+  const GUEST_PASSWORD = process.env.REACT_APP_GUEST_PASSWORD;
+ 
+  const [user, setUser] = useState({
+    email: GUEST_EMAIL,
+    password: GUEST_PASSWORD,
+  });
   const [errors, setErrors] = useState({
     email: "",
     password: "",
   });
-  const {setSidebarOpen, sidebarOpen} = useSidebar()
-  const { setLogin, loader, setLoader, isUserLoggedIn } = useAuth();
+  const { setSidebarOpen, sidebarOpen } = useSidebar();
+  const { setLogin, loader, setLoader, login, setAuthToken } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isUserLoggedIn) {
+    if (login) {
       navigate("/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUserLoggedIn]);
+  }, [login]);
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth < 768) {
@@ -40,17 +47,16 @@ const Login = () => {
   };
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log(user);
     try {
-      setErrors({ email: "", password: ""})
+      setErrors({ email: "", password: "" });
       setLoader(true);
       const response = await axios.post(
         "https://videolibrarybackend.shubambhasin.repl.co/login",
         user
       );
-      console.log(response)
       setLoader(false);
       if (response.data.token) {
+        setAuthToken(response.data.token);
         setLogin(true);
         localStorage.setItem(
           "user",
@@ -76,8 +82,18 @@ const Login = () => {
       console.log({ error: err });
     }
   };
+
+  const loginWithGuestCredentials = (e) => {
+    e.preventDefault();
+    // setUser({ email: "test@gmail.com", password: "shubam" });
+    handleLogin(e, user);
+  };
   return (
-    <div className={`login container ${sidebarOpen && " content-container block-center"} ${!sidebarOpen && "full-container"}`}>
+    <div
+      className={`login container ${
+        sidebarOpen && " content-container block-center"
+      } ${!sidebarOpen && "full-container"}`}
+    >
       <h1 className="h2 mb1-rem">Login</h1>
       <div className="login-container p1-rem">
         <form className="flex flex-col gap-2" onSubmit={handleLogin}>
@@ -104,8 +120,8 @@ const Login = () => {
             />
             <small className="f-red bold">{errors.password}</small>
           </div>
-          <div className="flex aic gap-2">
-            <button className="btn btn-blue">
+          <div className="flex flex-col aic gap-2">
+            <button className="btn btn-blue w-100">
               {loader ? (
                 <>
                   {/*########### loader #############*/}
@@ -120,6 +136,12 @@ const Login = () => {
               ) : (
                 "SignIn"
               )}
+            </button>
+            <button
+              className="btn btn-blue w-100"
+              onClick={loginWithGuestCredentials}
+            >
+              Login with guest credentials{" "}
             </button>
             <small>
               New User ? <NavLink to="/signup">Create account</NavLink>

@@ -41,10 +41,11 @@ export const isWatched = (state, video) => {
   }
 };
 
-export const checkLogin = (login, setLogin) => {
+export const checkLogin = (login, setLogin, setAuthToken) => {
   if (login) {
     localStorage.removeItem('user')
     setLogin(false);
+    setAuthToken(null);
   }
 };
 

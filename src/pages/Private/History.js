@@ -3,7 +3,7 @@ import VideoCardHorizontal from "../../components/VideoCardHorizontal";
 import { useVideo } from "../../context/videoLibraryContext";
 
 import history from "../../assets/history.svg";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { ADD_TO_HISTORY } from "../../reducer/actions";
 import { useAuth } from "../../context/AuthContext";
 import Loader from "../../components/loader/Loader";
@@ -12,45 +12,44 @@ import { notify } from "../../utils/notification";
 import { useSidebar } from "../../context/sidebarContext";
 const History = () => {
   const { state, dispatch, loader, setLoader } = useVideo();
-  const { isUserLoggedIn } = useAuth();
+  const { login } = useAuth();
   const { sidebarOpen } = useSidebar();
+  const navigate = useNavigate();
   const [error, setError] = useState({
     auth: "",
   });
 
   useEffect(() => {
-    (async () => {
+    if (login) {
+      (async () => {
+        try {
+          setLoader(true);
+          const response = await instance.get("/history");
 
-      try {
-        setLoader(true);
-        const response = await instance.get("/history");
-        console.log(response);
-        if (response.data.error) {
-          notify("Errror occured ❌");
-          setError({
-            ...error,
-            auth: "Authentication error, please login again",
-          });
-        }
-        if (response.data.success) {
-          setLoader(false);
-          if (response.data.history.length !== 0) {
-            notify("Data fetch successfully ✅");
-            dispatch({
-              type: ADD_TO_HISTORY,
-              payload: response.data.history[0].videos,
-            });
+          if (response.data.error) {
+            navigate(`/login`);
           }
-          if (response.data.history.length === 0) {
-            dispatch({ type: ADD_TO_HISTORY, payload: [] });
+          if (response.data.success) {
+            setLoader(false);
+            if (response.data.history.length !== 0) {
+              dispatch({
+                type: ADD_TO_HISTORY,
+                payload: response.data.history[0].videos,
+              });
+            }
+            if (response.data.history.length === 0) {
+              dispatch({ type: ADD_TO_HISTORY, payload: [] });
+            }
           }
+        } catch (error) {
+          console.log({ error });
         }
-      } catch (error) {
-        console.log({ error });
-      }
-    })();
+      })();
+    } else {
+      navigate(`/login`);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUserLoggedIn]);
+  }, [login]);
 
   const clearHistory = async () => {
     try {
@@ -74,7 +73,6 @@ const History = () => {
       {loader && <Loader />}
       {!loader && (
         <div className="flex flex-col">
-          
           {state.history.length === 0 ? (
             <span className="center-banners flex-col f-grey">
               <img src={history} className="default-img" alt="history-png" />
@@ -87,12 +85,12 @@ const History = () => {
             </span>
           ) : (
             <>
-            <div className="flex aic gap-3 mb1-rem">
-            <h1 className="h2">History</h1>
-            <button className="btn btn-outline" onClick={clearHistory}>
-              Clear History
-            </button>
-          </div>
+              <div className="flex aic gap-3 mb1-rem">
+                <h1 className="h2">History</h1>
+                <button className="btn btn-outline" onClick={clearHistory}>
+                  Clear History
+                </button>
+              </div>
               {state.history.map((data) => {
                 return <VideoCardHorizontal key={data._id} video={data} />;
               })}

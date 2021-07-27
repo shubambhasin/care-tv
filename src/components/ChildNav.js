@@ -26,7 +26,7 @@ const ChildNav = () => {
         <Link className="links child-nav-item" to="/">
           Baby food
         </Link> */}
-        <button className="btn" onClick={() => setSidebarOpen(!sidebarOpen)}>Toggle</button>
+        <button className="btn" onClick={() => setSidebarOpen(sidebarOpen => !sidebarOpen)}>Toggle</button>
       </span>
     </div>
   );

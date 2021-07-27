@@ -19,7 +19,7 @@ const Homepage = () => {
         setLoader(true);
         const response = await instance.get("/videos");
         setLoader(false);
-        console.log(response);
+     
         if(response.data.success)
         {
           notify("Data fetched successfully ✅")

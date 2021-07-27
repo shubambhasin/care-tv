@@ -1,13 +1,11 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import { useVideo } from "../context/videoLibraryContext";
 
-import logo from '../assets/logo.png'
+import logo from "../assets/logo.png";
 import { useAuth } from "../context/AuthContext";
 import { checkLogin } from "../reducer/actions";
 const Navbar = () => {
-  const { login, setLogin } = useAuth()
-  const { state } = useVideo();
+  const { login, setLogin, setAuthToken } = useAuth();
   return (
     <div className="navbar">
       <span>
@@ -17,15 +15,22 @@ const Navbar = () => {
       </span>
       <span className="flex gap-2">
         <Link className="links" to="/saved">
-          Saved 
+          Saved
         </Link>
         <Link className="links" to="/history">
-          History        </Link>
+          History{" "}
+        </Link>
         <Link className="links" to="/playlist">
           Playlists
         </Link>
 
-       <button className="btn btn-red" onClick={() => checkLogin(login, setLogin, )}> <NavLink  to="/login">{login ? "Logout" : "Login"}</NavLink></button>
+        <button
+          className="btn btn-red"
+          onClick={() => checkLogin(login, setLogin, setAuthToken)}
+        >
+          {" "}
+          <NavLink to="/login">{login ? "Logout" : "Login"}</NavLink>
+        </button>
       </span>
     </div>
   );

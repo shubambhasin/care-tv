@@ -14,56 +14,59 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { notify } from "../utils/notification";
 import { instance } from "../api/axiosapi";
+import { useNavigate } from "react-router";
 
 // ***************** player************************************ */
 const Player = ({ video }) => {
   const { state } = useVideo();
   const { playlistState, showPlaylist, setShowPlaylist } = usePlaylist();
-  const { authToken } = useAuth();
+  const { authToken, login } = useAuth();
+  const navigate = useNavigate();
 
   const opts = {
-    width: '100%',
+    width: "100%",
     playerVars: {
       autoplay: 1,
     },
   };
 
- 
   // ADDING TO SAVED
   const addToSaved = async (data) => {
-    console.log("Auth token from inside add to videos", authToken)
-    try {
-      const response = await instance.post(
-        "/saved",
-        {videoData: data}
-      );
-      console.log(response);
-      if (response.data.success) {
-        notify("Added to saved videos✅");
-      }
-      if (response.data.error) {
+    console.log("Auth token from inside add to videos", authToken);
+    if (login) {
+      try {
+        const response = await instance.post("/saved", { videoData: data });
+        console.log(response);
+        if (response.data.success) {
+          notify("Added to saved videos✅");
+        }
+        if (response.data.error) {
+          notify("Error occured while adding ❌");
+        }
+      } catch (err) {
+        console.error(err);
         notify("Error occured while adding ❌");
       }
-    } catch (err) {
-      console.error(err);
-      notify("Error occured while adding ❌");
+    } else {
+      navigate("/login");
     }
   };
 
   const addToLiked = async (state, data) => {
+    if (login) {
+      try {
+        const response = await instance.post("/liked", { videoData: data });
 
-    try {
-      const response = await instance.post("/liked",
-        {videoData: data});
-
-      console.log(response);
-      if(response.data.success)
-      {
-        notify("Video liked ✅")
+        console.log(response);
+        if (response.data.success) {
+          notify("Video liked ✅");
+        }
+      } catch (err) {
+        console.error(err);
+        notify("Error occured while liking the video ❌");
       }
-    } catch (err) {
-      console.error(err);
-      notify("Error occured while liking the video ❌")
+    } else {
+      navigate("/login");
     }
   };
 
@@ -82,7 +85,6 @@ const Player = ({ video }) => {
     }
   };
 
-
   const handlePlaylist = (video) => {
     console.log(video._id);
     console.log(playlistState);
@@ -91,13 +93,13 @@ const Player = ({ video }) => {
 
   return (
     <div className="player">
-      <YouTube videoId={`${video.videoId}`} opts={opts}/>
+      <YouTube videoId={`${video.videoId}`} opts={opts} />
       <h1 className="h3">{video.name} </h1>
       <div className="flex">
         <span className="flex aic jcc">
-        <span>
-          <p>20k views</p>
-        </span>
+          <span>
+            <p>20k views</p>
+          </span>
           <button className="btn" onClick={() => addToLiked(state, video)}>
             {state.likedVideos.filter((data) => data.videoId === video.videoId)
               .length === 0 ? (

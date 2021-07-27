@@ -27,8 +27,7 @@ const Liked = () => {
         setLoader(false);
         console.log(response);
         if (response.data.success) {
-          notify("Data fetched successfully ✅");
-          dispatch({
+         dispatch({
             type: ADD_TO_LIKED_VIDEOS,
             payload: response.data.videos[0].videos,
           });

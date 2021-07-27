@@ -13,7 +13,7 @@ import { useSidebar } from "../../context/sidebarContext";
 
 const Saved = () => {
   const { state, dispatch, loader, setLoader } = useVideo();
-  const { isUserLoggedIn, authToken } = useAuth();
+  const { isUserLoggedIn } = useAuth();
   const { sidebarOpen } = useSidebar();
   const [error, setError] = useState({
     auth: "",
@@ -26,9 +26,7 @@ const Saved = () => {
         setLoader(true);
         const response = await instance.get("/saved");
         setLoader(false);
-        console.log(response);
         if (response.data.success) {
-          notify("Data fetched successfully");
           dispatch({
             type: ADD_TO_SAVED_VIDEOS,
             payload: response.data.videos[0].videos,
